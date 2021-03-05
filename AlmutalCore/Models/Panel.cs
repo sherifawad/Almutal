@@ -6,10 +6,10 @@ namespace AlmutalCore.Models
 {
     public class Panel
     {
-
         public string Title { get; set; }
         public StockSheet Sheet { get; set; }
         public Dimension Dimension { get; set; }
+        public Position Position { get; set; }
         public bool CanRotate { get; set; }
         public int Count { get; set; }
 

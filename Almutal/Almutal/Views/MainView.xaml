@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Almutal.Views.MainView">
+    <ContentPage.Content>
+            <!--<StackLayout x:Name="stack">
+            </StackLayout>-->
+        <ScrollView BackgroundColor="White">
+        <Grid x:Name="grid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Button x:Name="Redo"
+                Text="Refresh" 
+                Grid.Row="0" 
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="End"
+                Clicked="Redo_Clicked"/>
+        </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

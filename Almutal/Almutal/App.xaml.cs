@@ -14,7 +14,8 @@ namespace Almutal
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+            //MainPage = new AppShell();
+            MainPage = new MainView();
         }
 
         protected override void OnStart()
