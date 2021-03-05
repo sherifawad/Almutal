@@ -125,13 +125,14 @@ namespace Almutal.Views
 
                             // Adjust TextSize property so text is 90% of screen width
                             float textWidth = textPaint.MeasureText(text);
-                            textPaint.TextSize = 0.9f * boxrect.Width * textPaint.TextSize / textWidth;
+                            textPaint.TextSize = 0.9f * boxrect.Height * textPaint.TextSize / textWidth;
+                            //textPaint.TextSize = 0.9f * textPaint.FontMetrics.Top * textPaint.TextSize / textWidth;
                             //textPaint.MeasureText(text, ref boxrect);
 
                             canvas.DrawRect(boxrect, rectPaint);
                             // Calculate offsets to center the text on the box
-                            float xText = boxrect.MidX - (boxrect.Width*.9f) / 2;
-                            float yText = boxrect.MidY - textPaint.TextSize/2;
+                            float xText = boxrect.MidX - (boxrect.Height * .9f) / 2;
+                            float yText = boxrect.MidY + boxrect.Height/8;
                             // And draw the text
                             canvas.DrawText(text, xText, yText, textPaint);
                         }
@@ -145,16 +146,17 @@ namespace Almutal.Views
 
                 // get the scale to fill the screen
                 float scale = canvasMin / svgMax;
-                //canvas.Scale(scale);
+                //canvas.Scale(50);
 
 
             };
 
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             sKCanvasView.InputTransparent = true;
+            sKCanvasView.IgnorePixelScaling = true;
             sKCanvasView.WidthRequest = 300;
             sKCanvasView.HeightRequest = 180;
-            sKCanvasView.IgnorePixelScaling = true;
+            //sKCanvasView.Scale = 1.2;
 
             grid.Children.Add(sKCanvasView, 0, row);
         }
