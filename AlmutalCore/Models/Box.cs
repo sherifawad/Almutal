@@ -6,6 +6,12 @@ namespace AlmutalCore.Models
 {
     public class Box
     {
+        public Box(float length, float width)
+        {
+            Length = length;
+            Width = width;
+        }
+
         public float Length { get; set; }
         public float Width { get; set; }
         public float Area { get; set; }
