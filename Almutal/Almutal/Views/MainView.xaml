@@ -1,25 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             
              x:Class="Almutal.Views.MainView">
-    <ContentPage.Content>
-        <!--<StackLayout x:Name="stack">
-            </StackLayout>-->
-        <ScrollView x:Name="scroll"
-                    BackgroundColor="White">
-
-            <Grid x:Name="gridLayout" RowDefinitions="Auto">
-            <Button x:Name="Redo"
+    <ContentPage.Content >
+            <StackLayout x:Name="stack" Margin="20" >
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Redo"
                 Text="Refresh" 
-                Grid.Row="0" 
                 HorizontalOptions="StartAndExpand"
                 VerticalOptions="End"
                 Clicked="Redo_Clicked"/>
-                <!--<StackLayout x:Name="stack"
-                             Grid.Row="1"/>-->
+                    
+                    <Label HorizontalOptions="StartAndExpand" 
+                           VerticalOptions="Center" 
+                           Text="{Binding SheetsNumber}" />
 
-            </Grid>
-        </ScrollView>
+                </StackLayout>
 
+            <ScrollView>
+                <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Items}" BindableLayout.EmptyView="No achievements">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <ContentView Content="{Binding .}" Margin="0,0,0,10" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+
+            <!--<ListView ItemsSource="{Binding Items}"
+                      HorizontalOptions="CenterAndExpand"
+                      HasUnevenRows="True" 
+                      SeparatorVisibility="Default"
+                      SeparatorColor="White"
+                      Margin="10"
+                      BackgroundColor="White">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ContentView Content="{Binding .}" Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+
+            </StackLayout>
     </ContentPage.Content>
 </ContentPage>

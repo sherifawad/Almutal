@@ -12,11 +12,13 @@ using Xamarin.Forms.Shapes;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Rectangle = Xamarin.Forms.Shapes.Rectangle;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace Almutal.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainView : ContentPage
+    public partial class MainView : ContentPage, INotifyPropertyChanged
     {
         private Algorithm Algorithm;
         private const uint BoxNumber = 155;
@@ -26,7 +28,7 @@ namespace Almutal.Views
         private float containerHeight = 180f;
         private string label = string.Empty;
         private float area;
-        private StackLayout stack;
+        //private StackLayout stack;
         private Grid grid;
 
         private List<Box> noPositionBoxes = new List<Box>
@@ -187,10 +189,15 @@ namespace Almutal.Views
             new Box(12 ,173 )
         };
 
+        public string SheetsNumber { get; set; }
+        public ObservableCollection<FlexLayout> Items { get; set; }
 
         public MainView()
         {
             InitializeComponent();
+            Items = new ObservableCollection<FlexLayout>();
+            BindingContext = this;
+            
         }
 
         protected override void OnAppearing()
@@ -282,6 +289,7 @@ namespace Almutal.Views
         private void paint(IEnumerable<IGrouping<int, Box>> results)
         {
             // Create SKCanvasView to view result
+            SheetsNumber = results.Count().ToString();
             int row = 1;
             foreach (var sheet in results)
             {
@@ -291,10 +299,10 @@ namespace Almutal.Views
                 row++;
 
             }
-            if (containerHeight > containerWidth)
-                scroll.HeightRequest = Math.Ceiling(results.Count() * containerWidth);
-            else
-                scroll.HeightRequest = Math.Ceiling(results.Count() * containerHeight);
+            //if (containerHeight > containerWidth)
+            //    scroll.HeightRequest = Math.Ceiling(results.Count() * containerWidth);
+            //else
+            //    scroll.HeightRequest = Math.Ceiling(results.Count() * containerHeight);
 
             //grid.Children.Add(stack, 0, 1);
             //scroll.Content = grid;
@@ -303,6 +311,7 @@ namespace Almutal.Views
 
         private void DrawRects(SKCanvasView sKCanvasView, IGrouping<int, Box> sheet, int row)
         {
+            SKImage skiImage = null;
             sKCanvasView.PaintSurface += (s, e) =>
             {
                 SKImageInfo info = e.Info;
@@ -311,6 +320,18 @@ namespace Almutal.Views
                 canvas.Clear(SKColors.Black);
                 //canvas.Clear();
                 Random rand = new Random();
+                sKCanvasView.WidthRequest = 300;
+                sKCanvasView.HeightRequest = 180;
+                sKCanvasView.InputTransparent = true;
+                canvas.Scale((float)(e.Info.Width / Math.Ceiling(sKCanvasView.Width)));
+
+                //float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
+                //// get the size 
+                //float svgMax = Math.Max(containerWidth, containerHeight);
+
+                //// get the scale to fill the screen
+                //float scale = canvasMin / svgMax;
+                //canvas.Scale(scale);
 
                 foreach (var box in sheet.AsEnumerable())
                 {
@@ -323,7 +344,7 @@ namespace Almutal.Views
                         uint red = (uint)rand.Next(20, 234);
                         uint grn = (uint)rand.Next(20, 234);
                         uint blu = (uint)rand.Next(20, 234);
-                        var text = $"{box.Width} * {box.Length}";
+                        var text = $"{box.Width} * {box.Length} ID:{box.Id}";
 
                         using (var rectPaint = new SKPaint()
                         {
@@ -339,42 +360,75 @@ namespace Almutal.Views
 
                             //canvas.Scale(scale);
 
-                            // Adjust TextSize property so text is 90% of screen width
-                            float textWidth = textPaint.MeasureText(text);
-                            textPaint.TextSize = 0.9f * boxrect.Height * textPaint.TextSize / textWidth;
+
                             //textPaint.TextSize = 0.9f * textPaint.FontMetrics.Top * textPaint.TextSize / textWidth;
                             //textPaint.MeasureText(text, ref boxrect);
 
                             canvas.DrawRect(boxrect, rectPaint);
-                            // Calculate offsets to center the text on the box
-                            float xText = boxrect.MidX - (boxrect.Height * .9f) / 2;
-                            float yText = boxrect.MidY + boxrect.Height / 8;
-                            // And draw the text
-                            canvas.DrawText(text, xText, yText, textPaint);
+                            // Adjust TextSize property so text is 90% of screen width
+                            float textWidth = textPaint.MeasureText(text);
+                            if (box.Width > box.Length)
+                            {
+                                textPaint.TextSize = 0.9f * boxrect.Height * textPaint.TextSize / textWidth;
+                                // Calculate offsets to center the text on the box
+                                float xText = boxrect.MidX - (boxrect.Height * .9f) / 2;
+                                float yText = boxrect.MidY + boxrect.Height / 8;
+                                // And draw the text
+                                canvas.DrawText(text, xText, yText, textPaint);
+                            }
+                            else
+                            {
+                                textPaint.TextSize = 0.9f * boxrect.Width * textPaint.TextSize / textWidth;
+                                // Calculate offsets to center the text on the box
+                                float xText = boxrect.MidX - (boxrect.Width * .9f) / 2;
+                                float yText = boxrect.MidY + boxrect.Width / 8;
+                                // And draw the text
+                                canvas.DrawText(text, xText, yText, textPaint);
+                            }
+
+
                         }
                     }
 
                 }
-
-                float canvasMin = Math.Min(e.Info.Width, e.Info.Height);
-                // get the size 
-                float svgMax = Math.Max(containerWidth, containerHeight);
-
-                // get the scale to fill the screen
-                float scale = canvasMin / svgMax;
-                //canvas.Scale(50);
-
-
             };
-
-            sKCanvasView.InputTransparent = true;
+            //sKCanvasView.InputTransparent = true;
+            //sKCanvasView.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //sKCanvasView.VerticalOptions = LayoutOptions.FillAndExpand;
             //sKCanvasView.IgnorePixelScaling = true;
-            //sKCanvasView.WidthRequest = 300;
+            //sKCanvasView.WidthRequest = 900;
             //sKCanvasView.HeightRequest = 180;
             //sKCanvasView.Scale = 1.2;
-            //stack.Children.Add(sKCanvasView);
-            gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            gridLayout.Children.Add(sKCanvasView, 0, row);
+            //var scroll = new ScrollView
+            //{
+            //    Content = sKCanvasView,
+            //    WidthRequest = 180
+
+            //};
+            //if (skiImage != null)
+            //{
+            //    SKData encoded = skiImage.Encode();
+            //    // get a stream over the encoded data
+            //    var stream = encoded.AsStream();
+            //    var image = new Image
+            //    {
+            //        Source = ImageSource.FromStream(() => stream)
+            //    };
+            //    stack.Children.Add(image);
+            //}
+            var flex = new FlexLayout
+            {
+                Wrap = FlexWrap.Wrap
+            };
+            flex.Children.Add(sKCanvasView);
+            Items.Add(flex);
+
+            //stack.Children.Add(new ScrollView { 
+            //    Content = sKCanvasView
+            //});
+
+            //gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            //gridLayout.Children.Add(sKCanvasView, 0, row);
         }
 
         private void Redo_Clicked(object sender, EventArgs e)
@@ -395,6 +449,7 @@ namespace Almutal.Views
                 //}
 
                 //gridLayout.Children.Clear();
+                Items.Clear();
                 var results = boxes.GroupBy(p => p.ParentId);
                 paint(results);
 

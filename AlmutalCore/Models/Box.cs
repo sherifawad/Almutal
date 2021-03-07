@@ -12,6 +12,11 @@ namespace AlmutalCore.Models
             Width = width;
         }
 
+        public Box()
+        {
+
+        }
+
         public float Length { get; set; }
         public float Width { get; set; }
         public float Area { get; set; }
