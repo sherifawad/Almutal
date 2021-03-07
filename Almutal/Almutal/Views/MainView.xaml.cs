@@ -368,9 +368,9 @@ namespace Almutal.Views
             };
 
             sKCanvasView.InputTransparent = true;
-            sKCanvasView.IgnorePixelScaling = true;
-            sKCanvasView.WidthRequest = 300;
-            sKCanvasView.HeightRequest = 180;
+            //sKCanvasView.IgnorePixelScaling = true;
+            //sKCanvasView.WidthRequest = 300;
+            //sKCanvasView.HeightRequest = 180;
             //sKCanvasView.Scale = 1.2;
             //stack.Children.Add(sKCanvasView);
             gridLayout.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
