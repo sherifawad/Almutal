@@ -100,25 +100,25 @@ namespace AlmutalCore
                 foreach (var box in Boxes)
                 {
 
-                    if (box.Used)
-                        continue;
-                    foreach (var item in emptyRightNodes)
-                    {
-                        if (item == null)
-                            continue;
-                        var nextnode = FindNode(item, box.Width, box.Length);
-                        if (nextnode != null)
-                        {
-                            box.Position = SplitNode(nextnode, box.Width, box.Length);
+                    //if (box.Used)
+                    //    continue;
+                    //foreach (var item in emptyRightNodes)
+                    //{
+                    //    if (item == null)
+                    //        continue;
+                    //    var nextnode = FindNode(item, box.Width, box.Length);
+                    //    if (nextnode != null)
+                    //    {
+                    //        box.Position = SplitNode(nextnode, box.Width, box.Length);
 
-                            box.ParentId = rootNode.Id;
-                            box.Used = true;
-                            boxes.Add(box);
-                            emptyRightNodes.Remove(item);
-                            if (boxes.Count == Boxes.Count)
-                                break;
-                        }
-                    }
+                    //        box.ParentId = rootNode.Id;
+                    //        box.Used = true;
+                    //        boxes.Add(box);
+                    //        emptyRightNodes.Remove(item);
+                    //        if (boxes.Count == Boxes.Count)
+                    //            break;
+                    //    }
+                    //}
 
                     //if (box.Used)
                     //    continue;
@@ -161,22 +161,22 @@ namespace AlmutalCore
                         if (boxes.Count == Boxes.Count)
                             break;
                     }
-                    else
-                    {
-                        Node empty = null;
-                        var lastbox = boxes.LastOrDefault();
-                        var lastNode = mainNodes.LastOrDefault();
-                        if (lastbox == null || lastNode == null)
-                            continue;
-                        empty = growRight(Width - (lastbox.Position.X + lastbox.Width), lastbox.Position.Y + lastbox.Length, lastNode.RightNode);
-                        if (empty != null)
-                            emptyRightNodes.Add(empty);
-                        else
-                            empty = growDown(lastbox.Position.X + lastbox.Width, Length - (lastbox.Position.Y + lastbox.Length), lastNode);
-                        if (empty != null)
-                            emptyBottomNodes.Add(empty);
+                    //else
+                    //{
+                    //    Node empty = null;
+                    //    var lastbox = boxes.LastOrDefault();
+                    //    var lastNode = mainNodes.LastOrDefault();
+                    //    if (lastbox == null || lastNode == null)
+                    //        continue;
+                    //    empty = growRight(Width - (lastbox.Position.X + lastbox.Width), lastbox.Position.Y + lastbox.Length, lastNode.RightNode);
+                    //    if (empty != null)
+                    //        emptyRightNodes.Add(empty);
+                    //    else
+                    //        empty = growDown(lastbox.Position.X + lastbox.Width, Length - (lastbox.Position.Y + lastbox.Length), lastNode);
+                    //    if (empty != null)
+                    //        emptyBottomNodes.Add(empty);
 
-                    }
+                    //}
 
 
                     //if (box.Used)

@@ -19,31 +19,27 @@
 
                 </StackLayout>
 
-            <ScrollView>
-                <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Items}" BindableLayout.EmptyView="No achievements">
+            <!--<ScrollView>
+                <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding SkiItems}" BindableLayout.EmptyView="No achievements">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <ContentView Content="{Binding .}" Margin="0,0,0,10" />
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-            </ScrollView>
+            </ScrollView>-->
 
-            <!--<ListView ItemsSource="{Binding Items}"
-                      HorizontalOptions="CenterAndExpand"
-                      HasUnevenRows="True" 
-                      SeparatorVisibility="Default"
-                      SeparatorColor="White"
-                      Margin="10"
-                      BackgroundColor="White">
+            <ListView ItemsSource="{Binding Items}"
+                      HasUnevenRows="True"
+                      SeparatorColor="Black">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ContentView Content="{Binding .}" Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" />
+                            <ContentView Content="{Binding .}" BackgroundColor="White" />
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>-->
+            </ListView>
 
             </StackLayout>
     </ContentPage.Content>
