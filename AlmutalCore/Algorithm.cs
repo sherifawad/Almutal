@@ -11,6 +11,7 @@ namespace AlmutalCore
     {
         public double Width { get; private set; }
         public double Length { get; private set; }
+        public double Kerf { get; private set; }
 
         private readonly List<Box> Boxes;
 
@@ -22,11 +23,12 @@ namespace AlmutalCore
                 return new Node { Length = Length, Width = Width, Id = id };
         }
 
-        public Algorithm(double width, double length, List<Box> boxes)
+        public Algorithm(double width, double length, List<Box> boxes, double kerf)
         {
             Width = width;
             Length = length;
             Boxes = boxes;
+            Kerf = kerf;
             Boxes = Sorter(Boxes);
 
         }
@@ -145,28 +147,60 @@ namespace AlmutalCore
 
             if (rootNode.IsOccupied)
             {
-                var nextNode = FindNode(rootNode.RightNode, boxWidth, boxLength);
-                if (nextNode == null)
+                var rightArea = rootNode.RightNode.Width * rootNode.RightNode.Length;
+                var bottomArea = rootNode.BottomNode.Width * rootNode.BottomNode.Length;
+                if (rightArea > bottomArea)
                 {
-
-                    nextNode = FindNode(rootNode.RightNode, boxLength, boxWidth);
-                    if (nextNode != null) { nextNode.rotated = true; }
-
+                    var nextNode = FindNode(rootNode.RightNode, boxWidth, boxLength);
                     if (nextNode == null)
                     {
-                        nextNode = FindNode(rootNode.BottomNode, boxWidth, boxLength);
 
-                        //if (nextNode == null)
-                        //{
-                        //    nextNode = FindNode(rootNode.BottomNode, boxLength, boxWidth);
-                        //    if (nextNode != null) { nextNode.rotated = true; }
+                        nextNode = FindNode(rootNode.RightNode, boxLength, boxWidth);
+                        if (nextNode != null) { nextNode.rotated = true; }
 
-                        //}
+                        if (nextNode == null)
+                        {
+                            nextNode = FindNode(rootNode.BottomNode, boxWidth, boxLength);
+
+                            //if (nextNode == null)
+                            //{
+                            //    nextNode = FindNode(rootNode.BottomNode, boxLength, boxWidth);
+                            //    if (nextNode != null) { nextNode.rotated = true; }
+
+                            //}
+                        }
+
                     }
+                    return nextNode;
+
+                }
+                else 
+                {
+                    var nextNode = FindNode(rootNode.BottomNode, boxWidth, boxLength);
+                    if (nextNode == null)
+                    {
+
+                        nextNode = FindNode(rootNode.BottomNode, boxLength, boxWidth);
+                        if (nextNode != null) { nextNode.rotated = true; }
+
+                        if (nextNode == null)
+                        {
+                            nextNode = FindNode(rootNode.RightNode, boxWidth, boxLength);
+
+                            //if (nextNode == null)
+                            //{
+                            //    nextNode = FindNode(rootNode.BottomNode, boxLength, boxWidth);
+                            //    if (nextNode != null) { nextNode.rotated = true; }
+
+                            //}
+                        }
+
+                    }
+                    return nextNode;
 
                 }
 
-                return nextNode;
+
             }
             else if (boxWidth <= rootNode.Width && boxLength <= rootNode.Length)
             {
@@ -203,8 +237,8 @@ namespace AlmutalCore
         private Node SplitNode(Node node, double boxWidth, double boxLength)
         {
             node.IsOccupied = true;
-            node.BottomNode = new Node { Y = node.Y + boxLength, X = node.X, Length = node.Length - boxLength, Width = node.Width };
-            node.RightNode = new Node { Y = node.Y, X = node.X + boxWidth, Length = boxLength, Width = node.Width - boxWidth };
+            node.BottomNode = new Node { Y = node.Y + Kerf + boxLength, X = node.X + Kerf, Length = node.Length - boxLength, Width = node.Width };
+            node.RightNode = new Node { Y = node.Y + Kerf, X = node.X + Kerf + boxWidth, Length = boxLength, Width = node.Width - boxWidth };
 
 
             return node;

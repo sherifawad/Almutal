@@ -25,6 +25,7 @@ namespace Almutal.Views
         private const int MaxHeight = 180;
         private double containerWidth = 280;
         private double containerHeight = 130;
+        private double Kerf = 0.3;
         private string label = string.Empty;
         private float area;
         //private StackLayout stack;
@@ -140,165 +141,6 @@ new Box(59.5,59.5),
 new Box(59.5,59.5),
 new Box(60,70),
 new Box(55,55)
-            //new Box(20, 172),
-            //new Box(75, 122),
-            //new Box(50, 49),
-            //new Box(120, 50),
-            //new Box(10, 175),
-            //new Box(169, 172),
-            //new Box(128, 158),
-            //new Box(32 ,47  ),
-            //new Box(16 ,90  ),
-            //new Box(21 ,63  ),
-            //new Box(10 ,113 ),
-            //new Box(22 ,34  ),
-            //new Box(14 ,41  ),
-            //new Box(16 ,31  ),
-            //new Box(14 ,32  ),
-            //new Box(164, 167),
-            //new Box(132, 176),
-            //new Box(13 ,161 ),
-            //new Box(26 ,41  ),
-            //new Box(15 ,65  ),
-            //new Box(23 ,25  ),
-            //new Box(10 ,38  ),
-            //new Box(152, 171),
-            //new Box(129, 171),
-            //new Box(24 ,156 ),
-            //new Box(150, 171),
-            //new Box(123, 156),
-            //new Box(29 ,156 ),
-            //new Box(37 ,56  ),
-            //new Box(26 ,76  ),
-            //new Box(30 ,65  ),
-            //new Box(146, 171),
-            //new Box(127, 147),
-            //new Box(34 ,170 ),
-            //new Box(34 ,53  ),
-            //new Box(18 ,94  ),
-            //new Box(30 ,54  ),
-            //new Box(131, 171),
-            //new Box(121, 150),
-            //new Box(49 ,151 ),
-            //new Box(57 ,58  ),
-            //new Box(40 ,82  ),
-            //new Box(10 ,77  ),
-            //new Box(148, 151),
-            //new Box(143, 149),
-            //new Box(30 ,122 ),
-            //new Box(137, 155),
-            //new Box(135, 137),
-            //new Box(43 ,124 ),
-            //new Box(130, 140),
-            //new Box(39 ,130 ),
-            //new Box(117, 155),
-            //new Box(112, 160),
-            //new Box(60 ,144 ),
-            //new Box(61 ,62  ),
-            //new Box(50 ,75  ),
-            //new Box(103, 169),
-            //new Box(110, 158),
-            //new Box(74 ,165 ),
-            //new Box(46 ,60  ),
-            //new Box(28 ,98  ),
-            //new Box(25 ,93  ),
-            //new Box(120, 141),
-            //new Box(126, 134),
-            //new Box(60 ,112 ),
-            //new Box(121, 139),
-            //new Box(93 ,175 ),
-            //new Box(54 ,118 ),
-            //new Box(65 ,87  ),
-            //new Box(66 ,72  ),
-            //new Box(98 ,160 ),
-            //new Box(105, 148),
-            //new Box(80 ,151 ),
-            //new Box(46 ,71  ),
-            //new Box(36 ,59  ),
-            //new Box(123, 124),
-            //new Box(91 ,166 ),
-            //new Box(57 ,111 ),
-            //new Box(60 ,79  ),
-            //new Box(38 ,79  ),
-            //new Box(36 ,79  ),
-            //new Box(88 ,170 ),
-            //new Box(83 ,178 ),
-            //new Box(87 ,161 ),
-            //new Box(83 ,91  ),
-            //new Box(29 ,78  ),
-            //new Box(33 ,64  ),
-            //new Box(110, 134),
-            //new Box(98 ,149 ),
-            //new Box(64 ,114 ),
-            //new Box(28 ,79  ),
-            //new Box(94 ,153 ),
-            //new Box(81 ,177 ),
-            //new Box(84 ,135 ),
-            //new Box(52 ,92  ),
-            //new Box(93 ,154 ),
-            //new Box(92 ,151 ),
-            //new Box(49 ,21  ),
-            //new Box(79 ,168 ),
-            //new Box(108, 121),
-            //new Box(96 ,135 ),
-            //new Box(30 ,101 ),
-            //new Box(43 ,124 ),
-            //new Box(93 ,131 ),
-            //new Box(108, 111),
-            //new Box(86 ,127 ),
-            //new Box(72 ,166 ),
-            //new Box(95 ,120 ),
-            //new Box(83 ,91  ),
-            //new Box(55 ,104 ),
-            //new Box(99 ,115 ),
-            //new Box(85 ,132 ),
-            //new Box(53 ,102 ),
-            //new Box(31 ,95  ),
-            //new Box(12 ,98  ),
-            //new Box(64 ,172 ),
-            //new Box(64 ,168 ),
-            //new Box(76 ,140 ),
-            //new Box(51 ,162 ),
-            //new Box(40 ,102 ),
-            //new Box(79 ,134 ),
-            //new Box(89 ,117 ),
-            //new Box(95 ,108 ),
-            //new Box(73 ,136 ),
-            //new Box(57 ,173 ),
-            //new Box(85 ,114 ),
-            //new Box(77 ,119 ),
-            //new Box(22 ,109 ),
-            //new Box(65 ,150 ),
-            //new Box(68 ,142 ),
-            //new Box(56 ,172 ),
-            //new Box(39 ,130 ),
-            //new Box(45 ,111 ),
-            //new Box(57 ,163 ),
-            //new Box(65 ,138 ),
-            //new Box(54 ,162 ),
-            //new Box(45 ,106 ),
-            //new Box(38 ,113 ),
-            //new Box(55 ,153 ),
-            //new Box(56 ,142 ),
-            //new Box(50 ,157 ),
-            //new Box(34 ,130 ),
-            //new Box(39 ,109 ),
-            //new Box(25 ,129 ),
-            //new Box(51 ,148 ),
-            //new Box(41 ,175 ),
-            //new Box(48 ,147 ),
-            //new Box(33 ,132 ),
-            //new Box(26 ,133 ),
-            //new Box(25 ,129 ),
-            //new Box(29 ,100 ),
-            //new Box(43 ,157 ),
-            //new Box(34 ,160 ),
-            //new Box(12 ,173 ),
-            //new Box(22 ,140 ),
-            //new Box(17 ,133 ),
-            //new Box(26 ,175 ),
-            //new Box(15 ,170 ),
-            //new Box(12 ,173 )
         };
 
         public string SheetsNumber { get; set; }
@@ -338,7 +180,21 @@ new Box(55,55)
             var boxes = Algorithm.Pack();
             if (boxes.Count > 0)
             {
-                SheetsNumber = $"No {boxes.Count}";
+                double boxesTotalArea = 0;
+                foreach (var sheet in boxes)
+                {
+                    foreach (var box in sheet.CuttedPanels)
+                    {
+                        boxesTotalArea += box.Area;
+                    }
+                }
+                //boxes.ForEach(x =>
+                //{
+                //    boxesTotalArea = x.CuttedPanels.Sum(y => y.Area);
+                //});
+                //var allboxes = noPositionBoxes.Sum(x => x.Length * x.Width);
+                var totalSheetsArea = containerHeight * containerWidth * boxes.Count;
+                SheetsNumber = $"Sheets Count {boxes.Count} Percentage: {100 * boxesTotalArea/totalSheetsArea}";
                 foreach (var item in boxes)
                 {
                     Items.Add(item);
@@ -368,7 +224,7 @@ new Box(55,55)
             //    //Console.WriteLine(box.width.ToString() + "x" + box.height.ToString());
             //}
 
-            Algorithm = new Algorithm(containerHeight, containerWidth, noPositionBoxes);
+            Algorithm = new Algorithm(containerHeight, containerWidth, noPositionBoxes, Kerf);
 
         }
 

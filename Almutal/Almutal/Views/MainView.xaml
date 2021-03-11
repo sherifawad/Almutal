@@ -2,19 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:Almutal.ValueConverters"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"           
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+              BackgroundColor="Black"
              x:Class="Almutal.Views.MainView">
     <ContentPage.Content >
         <AbsoluteLayout  Margin="20" BackgroundColor="White">
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                             AbsoluteLayout.LayoutFlags="All">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Label Text="{Binding SheetsNumber}" TextColor="Black" FontSize="Large"
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="Center" 
+                             BackgroundColor="White">
+                    <Label Text="{Binding SheetsNumber}" 
+                           TextColor="Black" 
+                           FontSize="Medium"
+                           FontAttributes ="Bold"
                        HorizontalTextAlignment="Start"
-                       HorizontalOptions="Start" VerticalOptions="Center" Padding="0,0,10,0" />
-                <Button Text="Save" HorizontalOptions="End" VerticalOptions="End" />
+                       HorizontalOptions="End" 
+                       VerticalOptions="Center" 
+                       Padding="0,0,10,0" />
+                <Button Text="Save" Margin="0,5,0,0" HorizontalOptions="End" />
                 </StackLayout>
-                <CollectionView x:Name="collection" ItemsSource="{Binding Items}" >
+                <BoxView BackgroundColor="Black" HeightRequest="5"/>
+
+                <CollectionView x:Name="collection" ItemsSource="{Binding Items}" BackgroundColor="Black">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
@@ -42,8 +52,8 @@
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
                                 </AbsoluteLayout>
-                                <!--<BoxView BackgroundColor="Black" HeightRequest="5"/>-->
                                     </Frame>
+                                <BoxView BackgroundColor="Black" HeightRequest="1"/>
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
