@@ -6,7 +6,7 @@ namespace AlmutalCore.Models
 {
     public class Box
     {
-        public Box(float length, float width)
+        public Box(double length, double width)
         {
             Length = length;
             Width = width;
@@ -17,12 +17,15 @@ namespace AlmutalCore.Models
 
         }
 
-        public float Length { get; set; }
-        public float Width { get; set; }
-        public float Area { get; set; }
+        public double Length { get; set; }
+        public double Width { get; set; }
+        public double Area { get; set; }
         public Node Position { get; set; }
         public bool Used { get; set; }
         public int ParentId { get; set; }
         public int Id { get; set; }
+        public string Color { get; set; }
+        public string Title => ($"{Width}*{Length}");
+
     }
 }

@@ -3,17 +3,16 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using AlmutalCore.Helpers;
 
 namespace AlmutalCore
 {
     public class Algorithm
     {
-        public float Width { get; private set; }
-        public float Length { get; private set; }
-        public List<Node> Gaps { get; private set; } = new List<Node>();
+        public double Width { get; private set; }
+        public double Length { get; private set; }
 
         private readonly List<Box> Boxes;
-        public List<Node> Sheets { get; private set; }
 
         private Node CreateNode(int id)
         {
@@ -23,13 +22,11 @@ namespace AlmutalCore
                 return new Node { Length = Length, Width = Width, Id = id };
         }
 
-        public Algorithm(float width, float length, List<Box> boxes)
+        public Algorithm(double width, double length, List<Box> boxes)
         {
             Width = width;
             Length = length;
             Boxes = boxes;
-
-            Sheets = new List<Node>();
             Boxes = Sorter(Boxes);
 
         }
@@ -43,31 +40,33 @@ namespace AlmutalCore
 
             foreach (var box in boxes)
             {
-                if (box.Length > box.Width)
-                {
+                //double tmp = 0;
+                //tmp = box.Width;
+                //if (box.Length > box.Width)
+                //{
+                //    result.Add(new Box
+                //    {
+                //        Width = box.Length,
+                //        Length = tmp,
+                //        Id = id,
+                //        Area = box.Width * box.Length,
+                //    });
+                //}
+                //else
+                //{
                     result.Add(new Box
                     {
                         Width = box.Width,
                         Length = box.Length,
                         Id = id,
-                        Area = box.Width * box.Length
+                        //Area = box.Width * box.Length
                     });
-                }
-                else
-                {
-                    result.Add(new Box
-                    {
-                        Width = box.Length,
-                        Length = box.Width,
-                        Id = id,
-                        Area = box.Width * box.Length
-                    });
-                }
+                //}
 
 
                 id++;
             }
-            result = result.OrderByDescending(x => x.Area).ThenByDescending(x => x.Width).ThenByDescending(x => x.Length).ToList();
+            result = result.OrderByDescending(x => Math.Max(x.Width, x.Length)).ToList();
             return result;
         }
 
@@ -84,70 +83,29 @@ namespace AlmutalCore
             }
         }
 
-        public List<Box> Pack()
+        public List<StockSheet> Pack()
         {
-
-            var boxes = new List<Box>();
-            var emptyRightNodes = new List<Node>();
-            var emptyBottomNodes = new List<Node>();
-            var mainNodes = new List<Node>();
+            var sheets = new List<StockSheet>();
+            var free = new List<Node>();
             var id = 0;
+            var noOfCuttedBoxes = 0;
             do
             {
+                var boxes = new List<Box>();
+
                 var rootNode = CreateNode(id);
-                Sheets.Add(rootNode);
+                //Sheets.Add(rootNode);
                 id++;
                 foreach (var box in Boxes)
                 {
-
-                    //if (box.Used)
-                    //    continue;
-                    //foreach (var item in emptyRightNodes)
-                    //{
-                    //    if (item == null)
-                    //        continue;
-                    //    var nextnode = FindNode(item, box.Width, box.Length);
-                    //    if (nextnode != null)
-                    //    {
-                    //        box.Position = SplitNode(nextnode, box.Width, box.Length);
-
-                    //        box.ParentId = rootNode.Id;
-                    //        box.Used = true;
-                    //        boxes.Add(box);
-                    //        emptyRightNodes.Remove(item);
-                    //        if (boxes.Count == Boxes.Count)
-                    //            break;
-                    //    }
-                    //}
-
-                    //if (box.Used)
-                    //    continue;
-                    //foreach (var item in emptyBottomNodes)
-                    //{
-                    //    if (item == null)
-                    //        continue;
-                    //    var nextnode = FindNode(item, box.Width, box.Length);
-                    //    if (nextnode != null)
-                    //    {
-                    //        box.Position = SplitNode(nextnode, box.Width, box.Length);
-
-                    //        box.ParentId = rootNode.Id;
-                    //        box.Used = true;
-                    //        boxes.Add(box);
-                    //        if (boxes.Count == Boxes.Count)
-                    //            break;
-                    //    }
-                    //}
-
                     if (box.Used)
                         continue;
                     var node = FindNode(rootNode, box.Width, box.Length);
                     if (node != null)
                     {
-                        mainNodes.Add(node);
                         if (node.rotated)
                         {
-                            float tmp = 0;
+                            double tmp = 0;
                             tmp = box.Width;
                             box.Width = box.Length;
                             box.Length = tmp;
@@ -157,78 +115,32 @@ namespace AlmutalCore
 
                         box.ParentId = rootNode.Id;
                         box.Used = true;
+                        box.Color = RandomStringColors.GenerateColor();
                         boxes.Add(box);
-                        if (boxes.Count == Boxes.Count)
+                        noOfCuttedBoxes += 1;
+                        if (noOfCuttedBoxes == Boxes.Count)
                             break;
                     }
-                    //else
-                    //{
-                    //    Node empty = null;
-                    //    var lastbox = boxes.LastOrDefault();
-                    //    var lastNode = mainNodes.LastOrDefault();
-                    //    if (lastbox == null || lastNode == null)
-                    //        continue;
-                    //    empty = growRight(Width - (lastbox.Position.X + lastbox.Width), lastbox.Position.Y + lastbox.Length, lastNode.RightNode);
-                    //    if (empty != null)
-                    //        emptyRightNodes.Add(empty);
-                    //    else
-                    //        empty = growDown(lastbox.Position.X + lastbox.Width, Length - (lastbox.Position.Y + lastbox.Length), lastNode);
-                    //    if (empty != null)
-                    //        emptyBottomNodes.Add(empty);
-
-                    //}
-
-
-                    //if (box.Used)
-                    //    continue;
-
-                    //foreach (var item in emptyRightNodes)
-                    //{
-                    //    if (item == null)
-                    //        continue;
-                    //    var nextnode = FindNode(item, box.Width, box.Length);
-                    //    if (nextnode != null)
-                    //    {
-                    //        box.Position = SplitNode(nextnode, box.Width, box.Length);
-
-                    //        box.ParentId = rootNode.Id;
-                    //        box.Used = true;
-                    //        boxes.Add(box);
-                    //        emptyRightNodes.Remove(item);
-                    //        if (boxes.Count == Boxes.Count)
-                    //            break;
-                    //    }
-                    //}
-
-                    //if (box.Used)
-                    //    continue;
-                    //foreach (var item in emptyBottomNodes)
-                    //{
-                    //    if (item == null)
-                    //        continue;
-                    //    var nextnode = FindNode(item, box.Width, box.Length);
-                    //    if (nextnode != null)
-                    //    {
-                    //        box.Position = SplitNode(nextnode, box.Width, box.Length);
-
-                    //        box.ParentId = rootNode.Id;
-                    //        box.Used = true;
-                    //        boxes.Add(box);
-                    //        emptyBottomNodes.Remove(item);
-                    //        if (boxes.Count == Boxes.Count)
-                    //            break;
-                    //    }
-                    //}
+                    else
+                    {
+                    }
                 }
-
-                if (boxes.Count == Boxes.Count)
+                var sheet = new StockSheet
+                {
+                    Id = rootNode.Id,
+                    CuttedPanels = boxes
+                };
+                sheets.Add(sheet);
+                if (noOfCuttedBoxes == Boxes.Count)
                     break;
+                var rightMostNode = RightMostLeaf(rootNode);
+                if(rightMostNode != null)
+                    free.Add(rightMostNode);
             } while (true);
-            Display(boxes);
-            return boxes;
+            return sheets;
         }
 
-        private Node FindNode(Node rootNode, float boxWidth, float boxLength)
+        private Node FindNode(Node rootNode, double boxWidth, double boxLength)
         {
 
             if (rootNode.IsOccupied)
@@ -243,6 +155,13 @@ namespace AlmutalCore
                     if (nextNode == null)
                     {
                         nextNode = FindNode(rootNode.BottomNode, boxWidth, boxLength);
+
+                        //if (nextNode == null)
+                        //{
+                        //    nextNode = FindNode(rootNode.BottomNode, boxLength, boxWidth);
+                        //    if (nextNode != null) { nextNode.rotated = true; }
+
+                        //}
                     }
 
                 }
@@ -259,7 +178,29 @@ namespace AlmutalCore
             }
         }
 
-        private Node SplitNode(Node node, float boxWidth, float boxLength)
+        private Node RightMostLeaf(Node root)
+        {
+            if (root == null)
+                return null;
+
+            while (root.RightNode != null)
+                root = root.RightNode;
+
+            return root;
+        }
+
+        private Node BottomMostLeaf(Node root)
+        {
+            if (root == null)
+                return null;
+
+            while (root.BottomNode != null)
+                root = root.BottomNode;
+
+            return root;
+        }
+
+        private Node SplitNode(Node node, double boxWidth, double boxLength)
         {
             node.IsOccupied = true;
             node.BottomNode = new Node { Y = node.Y + boxLength, X = node.X, Length = node.Length - boxLength, Width = node.Width };

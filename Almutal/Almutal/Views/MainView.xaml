@@ -1,46 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
-             
+             xmlns:converter="clr-namespace:Almutal.ValueConverters"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"           
              x:Class="Almutal.Views.MainView">
     <ContentPage.Content >
-            <StackLayout x:Name="stack" Margin="20" >
-                <StackLayout Orientation="Horizontal">
-                    <Button x:Name="Redo"
-                Text="Refresh" 
-                HorizontalOptions="StartAndExpand"
-                VerticalOptions="End"
-                Clicked="Redo_Clicked"/>
-                    
-                    <Label HorizontalOptions="StartAndExpand" 
-                           VerticalOptions="Center" 
-                           Text="{Binding SheetsNumber}" />
-
+        <AbsoluteLayout  Margin="20" BackgroundColor="White">
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+                            AbsoluteLayout.LayoutFlags="All">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="{Binding SheetsNumber}" TextColor="Black" FontSize="Large"
+                       HorizontalTextAlignment="Start"
+                       HorizontalOptions="Start" VerticalOptions="Center" Padding="0,0,10,0" />
+                <Button Text="Save" HorizontalOptions="End" VerticalOptions="End" />
                 </StackLayout>
-
-            <!--<ScrollView>
-                <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding SkiItems}" BindableLayout.EmptyView="No achievements">
-                    <BindableLayout.ItemTemplate>
+                <CollectionView x:Name="collection" ItemsSource="{Binding Items}" >
+                    <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <ContentView Content="{Binding .}" Margin="0,0,0,10" />
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </FlexLayout>
-            </ScrollView>-->
+                            <StackLayout>
 
-            <ListView ItemsSource="{Binding Items}"
-                      HasUnevenRows="True"
-                      SeparatorColor="Black">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ContentView Content="{Binding .}" BackgroundColor="White" />
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                    <Frame BorderColor="Black" Padding="0" >
+                                <AbsoluteLayout BindableLayout.ItemsSource="{Binding CuttedPanels}"
+                                      VerticalOptions="FillAndExpand">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Frame Padding="0" 
+                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
+                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
+                                                   AbsoluteLayout.LayoutFlags="None"
+                                           BorderColor="Black">
+                                                <Label Text="{Binding Title}" TextColor="White" FontSize="Small"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center" />
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference collection}}"
+                                                                  CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </AbsoluteLayout>
+                                <!--<BoxView BackgroundColor="Black" HeightRequest="5"/>-->
+                                    </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
             </StackLayout>
+
+            <Frame AbsoluteLayout.LayoutBounds="0,0,1,1"  AbsoluteLayout.LayoutFlags="All"
+                   VerticalOptions="CenterAndExpand" HorizontalOptions="Center"
+                BackgroundColor="WhiteSmoke" HasShadow="True" BorderColor="Silver" IsVisible="{Binding PopupVisible}">
+                <StackLayout>
+                    <Label Text="{Binding BoxDetails}" TextColor="Black" FontSize="Large" />
+                    <Button Text="Done" Command="{Binding DismissCommand}" />
+                </StackLayout>
+            </Frame>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
