@@ -15,6 +15,8 @@ namespace AlmutalCore
 
         private readonly List<Box> Boxes;
 
+        private List<Box> Free = new List<Box>();
+
         private Node CreateNode(int id)
         {
             if (Length > Width)
@@ -69,6 +71,7 @@ namespace AlmutalCore
                 id++;
             }
             result = result.OrderByDescending(x => Math.Max(x.Width, x.Length)).ToList();
+            //result = result.OrderByDescending(x => x.Area).ToList();
             return result;
         }
 
@@ -78,9 +81,7 @@ namespace AlmutalCore
             {
                 var positionx = box.Position != null ? box.Position.X.ToString() : String.Empty;
                 var positiony = box.Position != null ? box.Position.Y.ToString() : String.Empty;
-                Console.WriteLine("Length : " + box.Length + " Width : " + box.Width +
-                    " Pos_y  : " + positiony + " Pos_x : " + positionx +
-                    " Id  : " + box.Id + " ParentID : " + box.ParentId
+                Console.WriteLine(" Pos_y  : " + positiony + " Pos_x : " + positionx 
                     );
             }
         }
@@ -133,11 +134,14 @@ namespace AlmutalCore
                     CuttedPanels = boxes
                 };
                 sheets.Add(sheet);
+                Display(boxes);
+
                 if (noOfCuttedBoxes == Boxes.Count)
                     break;
-                var rightMostNode = RightMostLeaf(rootNode);
-                if(rightMostNode != null)
-                    free.Add(rightMostNode);
+
+                //var rightMostNode = RightMostLeaf(rootNode);
+                //if(rightMostNode != null)
+                //    free.Add(rightMostNode);
             } while (true);
             return sheets;
         }
@@ -156,7 +160,10 @@ namespace AlmutalCore
                     {
 
                         nextNode = FindNode(rootNode.RightNode, boxLength, boxWidth);
-                        if (nextNode != null) { nextNode.rotated = true; }
+                        if (nextNode != null) 
+                        {
+                            nextNode.rotated = true; 
+                        }
 
                         if (nextNode == null)
                         {
@@ -171,6 +178,9 @@ namespace AlmutalCore
                         }
 
                     }
+
+                    
+
                     return nextNode;
 
                 }
@@ -237,8 +247,8 @@ namespace AlmutalCore
         private Node SplitNode(Node node, double boxWidth, double boxLength)
         {
             node.IsOccupied = true;
-            node.BottomNode = new Node { Y = node.Y + Kerf + boxLength, X = node.X + Kerf, Length = node.Length - boxLength, Width = node.Width };
-            node.RightNode = new Node { Y = node.Y + Kerf, X = node.X + Kerf + boxWidth, Length = boxLength, Width = node.Width - boxWidth };
+            node.BottomNode = new Node { Y = node.Y + boxLength, X = node.X, Length = node.Length - boxLength + Kerf, Width = node.Width };
+            node.RightNode = new Node { Y = node.Y, X = node.X + boxWidth, Length = boxLength, Width = node.Width - boxWidth + Kerf };
 
 
             return node;

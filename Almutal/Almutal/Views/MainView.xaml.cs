@@ -194,7 +194,9 @@ new Box(55,55)
                 //});
                 //var allboxes = noPositionBoxes.Sum(x => x.Length * x.Width);
                 var totalSheetsArea = containerHeight * containerWidth * boxes.Count;
-                SheetsNumber = $"Sheets Count {boxes.Count} Percentage: {100 * boxesTotalArea/totalSheetsArea}";
+                var used = Math.Round(100 * boxesTotalArea / totalSheetsArea, 2);
+                var wast = Math.Round(100 * (1 - boxesTotalArea / totalSheetsArea), 2);
+                SheetsNumber = $"Sheets Count: {boxes.Count} \nUsed: {used}%  Wast: {wast}%";
                 foreach (var item in boxes)
                 {
                     Items.Add(item);
