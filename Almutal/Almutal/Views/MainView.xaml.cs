@@ -155,7 +155,7 @@ new Box(55,55)
                 return;
 
             PopupVisible = true;
-            BoxDetails = $"Width: {x.Width}  Length: {x.Length}";
+            BoxDetails = $"Width: {x.Width}\nLength: {x.Length}";
         });
 
         public Command DismissCommand => new Command(() => PopupVisible = false);

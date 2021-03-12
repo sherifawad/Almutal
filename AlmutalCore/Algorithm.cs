@@ -247,8 +247,8 @@ namespace AlmutalCore
         private Node SplitNode(Node node, double boxWidth, double boxLength)
         {
             node.IsOccupied = true;
-            node.BottomNode = new Node { Y = node.Y + boxLength, X = node.X, Length = node.Length - boxLength + Kerf, Width = node.Width };
-            node.RightNode = new Node { Y = node.Y, X = node.X + boxWidth, Length = boxLength, Width = node.Width - boxWidth + Kerf };
+            node.BottomNode = new Node { Y = node.Y + boxLength, X = node.X, Length = node.Length - (boxLength + Kerf), Width = node.Width };
+            node.RightNode = new Node { Y = node.Y, X = node.X + boxWidth, Length = boxLength, Width = node.Width - (boxWidth + Kerf) };
 
 
             return node;
