@@ -17,19 +17,12 @@ using System.Globalization;
 namespace Almutal.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainView : ContentPage, INotifyPropertyChanged
+    public partial class MainView : BasePage, INotifyPropertyChanged
     {
         private Algorithm Algorithm;
-        private const uint BoxNumber = 155;
-        private const int MaxWidth = 180;
-        private const int MaxHeight = 180;
         private double containerWidth = 280;
         private double containerHeight = 130;
         private double Kerf = 0.3;
-        private string label = string.Empty;
-        private float area;
-        //private StackLayout stack;
-        private Grid grid;
 
         private List<Box> noPositionBoxes = new List<Box>
         {

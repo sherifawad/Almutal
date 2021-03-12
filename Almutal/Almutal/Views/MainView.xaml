@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<local:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Almutal"
              xmlns:converter="clr-namespace:Almutal.ValueConverters"
-             xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
               BackgroundColor="Black"
              x:Class="Almutal.Views.MainView">
-    <ContentPage.Content >
+    <local:BasePage.Content>
         <AbsoluteLayout  Margin="20" BackgroundColor="White">
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                             AbsoluteLayout.LayoutFlags="All">
@@ -108,5 +108,5 @@
                 </StackLayout>
             </Frame>
         </AbsoluteLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </local:BasePage.Content>
+</local:BasePage>
