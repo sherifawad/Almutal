@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="Almutal.Views.DataEntryView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="InvalidEntryStyle"
+               TargetType="Entry">
+                <Setter Property="TextColor"
+                    Value="red" />
+                <Setter Property="PlaceholderColor"
+                    Value="red" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Frame Padding="4" BackgroundColor="Silver" HasShadow="False" Margin="20" >
+            <Frame HasShadow="False">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Frame BackgroundColor="Silver" 
+                                       HasShadow="False" 
+                                       Margin="-21,-21,5,0"
+                                       Padding="2,8,8,8">
+
+                            <Label Text="Sheet"
+                                              FontAttributes="Bold"
+                                              TextColor="Black"
+                                              VerticalOptions="Center"/>
+                        </Frame>
+
+                        <Grid ColumnDefinitions="*,*,*,*,*,*">
+
+                            <Label Grid.Column="0" Text="Width" 
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Start"  />
+                            <Entry Grid.Column="1" TextColor="Black" Keyboard="Numeric">
+                                <Entry.Behaviors>
+                                    <xct:MultiValidationBehavior InvalidStyle="{StaticResource InvalidEntryStyle}" >
+                                        <xct:NumericValidationBehavior MaximumDecimalPlaces="2"  />
+                                        <xct:CharactersValidationBehavior MinimumCharacterCount="1" CharacterType="Digit" />
+                                    </xct:MultiValidationBehavior>
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Label Grid.Column="2" Text="Height" FontAttributes="Bold" TextColor="Black" VerticalOptions="Start"  />
+                            <Entry Grid.Column="3" TextColor="Black" Keyboard="Numeric">
+                                <Entry.Behaviors>
+                                    <xct:MultiValidationBehavior InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                        <xct:NumericValidationBehavior MaximumDecimalPlaces="2" />
+                                        <xct:CharactersValidationBehavior MinimumCharacterCount="1" CharacterType="Digit" />
+                                    </xct:MultiValidationBehavior>
+                                </Entry.Behaviors>
+                            </Entry>
+
+                            <Label Grid.Column="4" Text="Kerf" FontAttributes="Bold" TextColor="Black"  VerticalOptions="Start" />
+                            <Entry Grid.Column="5" TextColor="Black" Keyboard="Numeric">
+                                <Entry.Behaviors>
+                                    <xct:MultiValidationBehavior InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                        <xct:NumericValidationBehavior MaximumDecimalPlaces="2" />
+                                        <xct:CharactersValidationBehavior  CharacterType="Digit" />
+                                    </xct:MultiValidationBehavior>
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </StackLayout>
+                    <BoxView BackgroundColor="LightGray" HeightRequest="3" Margin="-21,-8,-21,0" />
+                    <Grid>
+                        <Label Text="Items" HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="Large"
+                                   />
+                        <Label FontFamily="SolidAwesome" Text="&#xf0fe;" FontSize="Title"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End" BackgroundColor="White">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Button_Clicked" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                    <BoxView BackgroundColor="LightGray" HeightRequest="3" Margin="-21,5,-21,0" />
+
+                    <CollectionView 
+                        x:Name="list"
+                                SelectionMode="None"
+                        ItemsSource="{Binding Panels}">
+                        <!--<ListView.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>mono</x:String>
+                        <x:String>monodroid</x:String>
+                        <x:String>monotouch</x:String>
+                        <x:String>monorail</x:String>
+                        <x:String>monodevelop</x:String>
+                        <x:String>monotone</x:String>
+                        <x:String>monopoly</x:String>
+                        <x:String>monomodal</x:String>
+                        <x:String>mononucleosis</x:String>
+                    </x:Array>
+                </ListView.ItemsSource>-->
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" RowDefinitions="Auto,*"
+                                              VerticalOptions="Center"
+                                              IsVisible="{Binding EditMode,Converter={xct:InvertedBoolConverter}}">
+                                        <Label Grid.Column="0" 
+                                                   Text="Width:" 
+                                                   TextColor="Black"
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold"/>
+                                        <Label Grid.Column="1" Text="{Binding Width}" 
+                                                   TextColor="Gray"                                                    
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold"/>
+
+                                        <Label Grid.Column="2" Text="Height:" 
+                                                   TextColor="Black"
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold"/>
+                                        <Label Grid.Column="3" Text="{Binding Length}" 
+                                                   TextColor="Gray"                                                                    
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold" />
+
+                                        <Label Grid.Column="4" Text="Count:" TextColor="Black"
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold"/>
+                                        <Label Grid.Column="5" Text="{Binding Count}"
+                                                   TextColor="Gray"                                                                   
+                                                   FontSize="Medium"
+                                                   FontAttributes="Bold" />
+                                        <BoxView Grid.Row="1" Grid.ColumnSpan="6" BackgroundColor="Silver" HeightRequest="3" />
+
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference list}}" CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                    </Grid>
+                                    <Grid ColumnDefinitions="2*,2*,2*,*,*" RowDefinitions="Auto,*,*,*"
+                                          IsVisible="{Binding EditMode}">
+                                        <Entry Grid.Column="0" 
+                                               Placeholder="Width"
+                                               Text="{Binding Width}" TextColor="Black" Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior x:Name="WidthMultiValidation"
+                                                                             IsValid="{Binding BindingContext.IsWidthValid, Source={x:Reference list}}"
+                                                                             InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                                             
+                                                                             >
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                    <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+
+                                        <Entry Grid.Column="1" 
+                                               Placeholder="Length"
+                                               Text="{Binding Length}" TextColor="Black" Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior 
+                                                    x:Name="LengthMultiValidation"
+                                                    IsValid="{Binding BindingContext.IsLengthValid, Source={x:Reference list}}"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                    <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+
+                                        <Entry Grid.Column="2" 
+                                               Placeholder="Count"
+                                               Text="{Binding Count}" TextColor="Black" Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior 
+                                                    x:Name="CountMultiValidation"
+                                                    IsValid="{Binding BindingContext.IsCountValid, Source={x:Reference list}}"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="0" 
+                                                                                   xct:MultiValidationBehavior.Error="Value is not integer"/>
+                                                    <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+                                        <Label Grid.Column="3" FontFamily="SolidAwesome" Text="&#xf00c;" FontSize="Title"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End" BackgroundColor="White">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.SetBoxDimensionsCommand, Source={x:Reference list}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Grid.Column="4" FontFamily="SolidAwesome" Text="&#xf1f8;" FontSize="Title"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End" BackgroundColor="White">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding BindingContext.RemoveBoxCommand, Source={x:Reference list}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        
+                                        <Frame Grid.Row="1" Grid.ColumnSpan="5"
+                                                Padding="0" BackgroundColor="White"
+                                                   IsVisible="{Binding IsValid, Source={x:Reference WidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference WidthMultiValidation}}"
+                                                TextColor="Red"/>
+                                            </Frame>
+
+                                        <Frame Grid.Row="2" Grid.ColumnSpan="5"
+                                                Padding="0" BackgroundColor="White"
+                                                   IsVisible="{Binding IsValid, Source={x:Reference LengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference LengthMultiValidation}}"
+                                                TextColor="Red"/>
+                                            </Frame>
+
+                                        <Frame Grid.Row="3" Grid.ColumnSpan="5"
+                                                Padding="0" BackgroundColor="White"
+                                                   IsVisible="{Binding IsValid, Source={x:Reference CountMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference CountMultiValidation}}"
+                                                TextColor="Red"/>
+                                            </Frame>
+
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

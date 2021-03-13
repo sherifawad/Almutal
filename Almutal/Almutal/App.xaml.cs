@@ -4,6 +4,7 @@ using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+[assembly: ExportFont("fa-solid-900.ttf", Alias = "SolidAwesome")]
 namespace Almutal
 {
     public partial class App : Application
@@ -15,7 +16,7 @@ namespace Almutal
 
             DependencyService.Register<MockDataStore>();
             //MainPage = new AppShell();
-            MainPage = new MainView();
+            MainPage = new DataEntryView();
         }
 
         protected override void OnStart()
