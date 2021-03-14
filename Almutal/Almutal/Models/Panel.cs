@@ -15,6 +15,8 @@ namespace Almutal.Models
         public int? Count { get; set; }
         public bool EditMode { get; set; }
 
+        public string Title { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

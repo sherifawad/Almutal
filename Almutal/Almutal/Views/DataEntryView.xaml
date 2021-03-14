@@ -31,7 +31,7 @@
                                        HasShadow="False">
 
                             <Label Text="Sheet"
-                                   VerticalOptions="Start"
+                                   VerticalOptions="Center"
                                    FontAttributes="Bold"
                                    FontSize="Large"
                                    TextColor="Black"/>
@@ -39,7 +39,8 @@
 
                         <Grid Grid.Column="1">
 
-                            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*"
+                            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" 
+                                  RowDefinitions="*,Auto"
                                   IsVisible="{Binding SheetEditMode, Converter={xct:InvertedBoolConverter}}">
                                 <Label Grid.Column="0" 
                                                    Text="Width:" 
@@ -56,26 +57,47 @@
                                                    TextColor="Black"
                                                    FontSize="Large"
                                                    FontAttributes="Bold"/>
-                                <Label Grid.Column="3" Text="{Binding SheetLength}" 
-                                                   TextColor="Gray"                                                                    
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold" />
+                                
+                                <Label Grid.Column="3" 
+                                       Text="{Binding SheetLength}" 
+                                        TextColor="Gray"                                                                    
+                                        FontSize="Large"
+                                        FontAttributes="Bold" />
 
-                                <Label Grid.Column="4" Text="Kerf:" TextColor="Black"
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold"/>
-                                <Label Grid.Column="5" Text="{Binding KerfWidth}"
-                                                   TextColor="Gray"                                                                   
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold" />
+                                <Label Grid.Column="4" 
+                                       Text="Kerf:" 
+                                       TextColor="Black"
+                                       FontSize="Large"
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Column="5" 
+                                       Text="{Binding KerfWidth}"
+                                       TextColor="Gray"                                                                   
+                                       FontSize="Large"
+                                       FontAttributes="Bold" />
 
+                                <Label Grid.Column="0" 
+                                       Grid.Row="1"
+                                       Text="Title:" 
+                                       TextColor="Black"
+                                       FontSize="Large"
+                                       FontAttributes="Bold"/>
+                                
+                                <Label Grid.Column="1" 
+                                       Grid.Row="1"
+                                       Grid.ColumnSpan="5"
+                                       Text="{Binding Title}"
+                                       TextColor="Gray"                                                                   
+                                       FontSize="Large"
+                                       FontAttributes="Bold" />
+                                                               
                             </Grid>
-                            
-                            <Grid ColumnDefinitions="3*,3*,3*,Auto,*"
-                                  RowDefinitions="*,Auto"
+
+                            <Grid ColumnDefinitions="*,*,*,Auto"
+                                  RowDefinitions="*,*,Auto"
                                   IsVisible="{Binding SheetEditMode}">
                                 
                                 <Entry Grid.Column="0" 
+                                       Grid.Row="0"
                                                Placeholder="Width"
                                                Text="{Binding SheetWidth}" TextColor="Black" Keyboard="Numeric">
                                     <Entry.Behaviors>
@@ -94,6 +116,7 @@
                                 </Entry>
 
                                 <Entry Grid.Column="1" 
+                                       Grid.Row="0"
                                                Placeholder="Length"
                                                Text="{Binding SheetLength}" TextColor="Black" Keyboard="Numeric">
                                     <Entry.Behaviors>
@@ -114,6 +137,7 @@
                                 </Entry>
 
                                 <Entry Grid.Column="2" 
+                                       Grid.Row="0"
                                                Placeholder="Kerf"
                                                Text="{Binding KerfWidth}" TextColor="Black" Keyboard="Numeric">
                                     <Entry.Behaviors>
@@ -129,41 +153,57 @@
                                         </xct:MultiValidationBehavior>
                                     </Entry.Behaviors>
                                 </Entry>
-                                
-                                <Label Grid.Column="4" Grid.RowSpan="2" 
+
+                                <Entry Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       Placeholder="Title" 
+                                       Text="{Binding Title}"/>
+
+                                <Label Grid.Column="4"
+                                       Grid.Row="0"
+                                       Grid.RowSpan="3"
+                                       Padding="30,0,0,0"
                                        FontFamily="SolidAwesome" 
                                        Text="&#xf00c;" 
                                        FontSize="Title"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="End" 
+                                       VerticalOptions="Center" 
                                        BackgroundColor="White">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding SetSheetDimensionsCommand}"/>
                                     </Label.GestureRecognizers>
                                 </Label>
 
-                                <Frame Grid.Row="1" Grid.ColumnSpan="3"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference kerfMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       HasShadow="False"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       IsVisible="{Binding IsValid, Source={x:Reference kerfMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                     <Label 
                                                 Text="{Binding Errors[0], Source={x:Reference kerfMultiValidation}}"
                                                 TextColor="Red"/>
                                 </Frame>
                                 
-                                <Frame Grid.Row="1" Grid.ColumnSpan="3"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference sheetLengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       HasShadow="False"
+                                       IsVisible="{Binding IsValid, Source={x:Reference sheetLengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                     <Label 
                                                 Text="{Binding Errors[0], Source={x:Reference sheetLengthMultiValidation}}"
                                                 TextColor="Red"/>
                                 </Frame>
                                 
-                                <Frame Grid.Row="1" Grid.ColumnSpan="3"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference sheetWidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       HasShadow="False"
+                                       IsVisible="{Binding IsValid, Source={x:Reference sheetWidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                     <Label 
-                                                Text="{Binding Errors[0], Source={x:Reference sheetWidthMultiValidation}}"
-                                                TextColor="Red"/>
+                                        Text="{Binding Errors[0], Source={x:Reference sheetWidthMultiValidation}}"
+                                        TextColor="Red"/>
                                 </Frame>
 
                             </Grid>
@@ -207,7 +247,9 @@
                             <DataTemplate>
                                 <Grid RowDefinitions="Auto,*"
                                       Padding="8">
-                                    <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*"                                           
+                                    
+                                    <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*"
+                                          RowDefinitions="Auto,Auto"
                                           VerticalOptions="Center"
                                           Padding="15,0,0,0"
                                           Margin="0,0,-20,0"
@@ -239,16 +281,33 @@
                                                    FontSize="Medium"
                                                    FontAttributes="Bold" />
 
+                                        <Label Grid.Column="0"
+                                               Grid.Row="1"
+                                               Text="Title:" 
+                                               TextColor="Black"
+                                               FontSize="Medium"
+                                               FontAttributes="Bold"/>
+                                        <Label Grid.Column="1" 
+                                               Grid.ColumnSpan="2"
+                                               Grid.Row="1"
+                                               Text="{Binding Title}"
+                                               TextColor="Gray"                                                                   
+                                               FontSize="Medium"
+                                               FontAttributes="Bold" />
+
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference list}}" CommandParameter="{Binding .}" />
                                         </Grid.GestureRecognizers>
                                     </Grid>
                                     
-                                    <Grid ColumnDefinitions="2*,2*,2*,*,*" RowDefinitions="Auto,*"
+                                    <Grid ColumnDefinitions="2*,2*,2*,*,*" 
+                                          RowDefinitions="Auto,Auto,*"
                                           IsVisible="{Binding EditMode}">
                                         <Entry Grid.Column="0" 
                                                Placeholder="Width"
-                                               Text="{Binding Width}" TextColor="Black" Keyboard="Numeric">
+                                               Text="{Binding Width}" 
+                                               TextColor="Black"
+                                               Keyboard="Numeric">
                                             <Entry.Behaviors>
                                                 <xct:MultiValidationBehavior x:Name="WidthMultiValidation"
                                                                              IsValid="{Binding BindingContext.IsWidthValid, Source={x:Reference list}}"
@@ -310,8 +369,14 @@
                                                 </xct:MultiValidationBehavior>
                                             </Entry.Behaviors>
                                         </Entry>
-                                        
-                                        <Label Grid.Column="3" Grid.RowSpan="2"
+
+                                        <Entry Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               Placeholder="Title" 
+                                               Text="{Binding Title}"/>
+
+                                        <Label Grid.Column="3" 
+                                               Grid.RowSpan="3"
                                                FontFamily="SolidAwesome" Text="&#xf00c;" FontSize="Title"
                                                VerticalOptions="Center"
                                                HorizontalOptions="End" BackgroundColor="White">
@@ -321,7 +386,8 @@
                                             </Label.GestureRecognizers>
                                         </Label>
 
-                                        <Label Grid.Column="4" Grid.RowSpan="2"
+                                        <Label Grid.Column="4" 
+                                               Grid.RowSpan="3"
                                                FontFamily="SolidAwesome" Text="&#xf1f8;" FontSize="Title"
                                                VerticalOptions="Center"
                                                HorizontalOptions="End" BackgroundColor="White">
@@ -331,28 +397,31 @@
                                             </Label.GestureRecognizers>
                                         </Label>
 
-                                        <Frame Grid.Row="1" Grid.ColumnSpan="3"
+                                        <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
                                                HasShadow="False"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference CountMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference CountMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                             <Label 
                                                 Text="{Binding Errors[0], Source={x:Reference CountMultiValidation}}"
                                                 TextColor="Red"/>
                                         </Frame>
 
-                                        <Frame Grid.Row="1" Grid.ColumnSpan="3"
+                                        <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
                                                HasShadow="False"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference LengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference LengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                             <Label 
                                                 Text="{Binding Errors[0], Source={x:Reference LengthMultiValidation}}"
                                                 TextColor="Red"/>
                                         </Frame>
 
-                                        <Frame Grid.Row="1" Grid.ColumnSpan="3"
+                                        <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
                                                HasShadow="False"
-                                                Padding="0" BackgroundColor="White"
-                                                   IsVisible="{Binding IsValid, Source={x:Reference WidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference WidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
                                             <Label 
                                                 Text="{Binding Errors[0], Source={x:Reference WidthMultiValidation}}"
                                                 TextColor="Red"/>

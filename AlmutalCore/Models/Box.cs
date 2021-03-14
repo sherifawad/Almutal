@@ -6,10 +6,13 @@ namespace AlmutalCore.Models
 {
     public class Box
     {
-        public Box(double length, double width)
+        private string title;
+
+        public Box(double length, double width, string tile = null )
         {
             Length = length;
             Width = width;
+            Title = tile;
         }
 
         public Box()
@@ -25,7 +28,17 @@ namespace AlmutalCore.Models
         public int ParentId { get; set; }
         public int Id { get; set; }
         public string Color { get; set; }
-        public string Title => ($"{Width}*{Length}");
+        public string Title 
+        {
+            get 
+            { 
+                if(string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
+                    return $"{Width}*{Length}";
+                else
+                    return title; 
+            }
+            set => title = value; 
+        }
 
     }
 }
