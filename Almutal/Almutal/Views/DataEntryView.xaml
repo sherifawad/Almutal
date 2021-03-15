@@ -2,30 +2,59 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:local="clr-namespace:Almutal"
+             local:ViewModelLocator.AutoWireViewModel="True"
              x:Class="Almutal.Views.DataEntryView"
              x:Name="page">
     <ContentPage.Resources>
         <ResourceDictionary>
+
+            <Style TargetType="Entry">
+                <Setter Property="TextColor"
+                    Value="Black" />
+                <Setter Property="PlaceholderColor"
+                    Value="Silver" />
+                <Setter Property="BackgroundColor" 
+                        Value="White" />
+            </Style>
+
             <Style x:Key="InvalidEntryStyle"
                TargetType="Entry">
                 <Setter Property="TextColor"
-                    Value="red" />
+                    Value="Red" />
                 <Setter Property="PlaceholderColor"
-                    Value="red" />
+                    Value="Red" />
+            </Style>
+
+            <Style x:Key="DataLabelStyle"
+               TargetType="Label">
+                <Setter Property="TextColor"
+                    Value="Black" />
+                <Setter Property="FontAttributes"
+                    Value="Bold" />
+            </Style>
+            
+            <Style x:Key="DataValueLabelStyle"
+               TargetType="Label">
+                <Setter Property="TextColor"
+                    Value="Gray" />
+                <Setter Property="FontAttributes"
+                    Value="Bold" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Frame Padding="4" BackgroundColor="Silver" HasShadow="False" Margin="10" >
             <Frame HasShadow="False" Padding="0">
-                <StackLayout>
+                <StackLayout BackgroundColor="White">
                     
-                    <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+                    <Grid
+                          HorizontalOptions="Center">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding SheetEditCommand}" />
                         </Grid.GestureRecognizers>
 
-                        <Frame Grid.Column="0" Grid.RowSpan="2"
+                        <!--<Frame Grid.Column="0" Grid.RowSpan="2"
                                BackgroundColor="Silver" 
                                Padding="0,0,5,0"
                                        HasShadow="False">
@@ -35,71 +64,60 @@
                                    FontAttributes="Bold"
                                    FontSize="Large"
                                    TextColor="Black"/>
-                        </Frame>
+                        </Frame>-->
 
-                        <Grid Grid.Column="1">
-
-                            <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*" 
-                                  RowDefinitions="*,Auto"
+                        <Grid>
+                            <Grid 
+                                RowDefinitions="Auto,*"
+                                ColumnDefinitions="Auto,*,Auto,*,Auto,*"
                                   IsVisible="{Binding SheetEditMode, Converter={xct:InvertedBoolConverter}}">
+                                
                                 <Label Grid.Column="0" 
-                                                   Text="Width:" 
-                                                   TextColor="Black"
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold"/>
+                                       Text="Width:"
+                                       Style="{StaticResource DataLabelStyle}"/>
 
-                                <Label Grid.Column="1" Text="{Binding SheetWidth}" 
-                                                   TextColor="Gray"                                                    
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding SheetWidth}" 
+                                       Style="{StaticResource DataValueLabelStyle}"/>
 
-                                <Label Grid.Column="2" Text="Length:" 
-                                                   TextColor="Black"
-                                                   FontSize="Large"
-                                                   FontAttributes="Bold"/>
+                                <Label Grid.Column="2" 
+                                       Text="Length:" 
+                                       Style="{StaticResource DataLabelStyle}"/>
                                 
                                 <Label Grid.Column="3" 
                                        Text="{Binding SheetLength}" 
-                                        TextColor="Gray"                                                                    
-                                        FontSize="Large"
-                                        FontAttributes="Bold" />
+                                       Style="{StaticResource DataValueLabelStyle}" />
 
                                 <Label Grid.Column="4" 
                                        Text="Kerf:" 
-                                       TextColor="Black"
-                                       FontSize="Large"
-                                       FontAttributes="Bold"/>
-                                <Label Grid.Column="5" 
+                                       Style="{StaticResource DataLabelStyle}"/>
+                                
+                                <Label Grid.Column="5"
                                        Text="{Binding KerfWidth}"
-                                       TextColor="Gray"                                                                   
-                                       FontSize="Large"
-                                       FontAttributes="Bold" />
+                                       Style="{StaticResource DataValueLabelStyle}"/>
 
                                 <Label Grid.Column="0" 
                                        Grid.Row="1"
                                        Text="Title:" 
-                                       TextColor="Black"
-                                       FontSize="Large"
-                                       FontAttributes="Bold"/>
-                                
+                                       Style="{StaticResource DataLabelStyle}"/>
+
                                 <Label Grid.Column="1" 
                                        Grid.Row="1"
-                                       Grid.ColumnSpan="5"
                                        Text="{Binding Title}"
-                                       TextColor="Gray"                                                                   
-                                       FontSize="Large"
-                                       FontAttributes="Bold" />
-                                                               
+                                       Style="{StaticResource DataValueLabelStyle}" />
+
                             </Grid>
 
                             <Grid ColumnDefinitions="*,*,*,Auto"
                                   RowDefinitions="*,*,Auto"
+                                  RowSpacing="0"
                                   IsVisible="{Binding SheetEditMode}">
                                 
                                 <Entry Grid.Column="0" 
                                        Grid.Row="0"
-                                               Placeholder="Width"
-                                               Text="{Binding SheetWidth}" TextColor="Black" Keyboard="Numeric">
+                                       Placeholder="Width"
+                                       Text="{Binding SheetWidth}" 
+                                       Keyboard="Numeric">
                                     <Entry.Behaviors>
                                         <xct:MultiValidationBehavior x:Name="sheetWidthMultiValidation"
                                                                              IsValid="{Binding IsSheetWidthValid}"
@@ -117,8 +135,9 @@
 
                                 <Entry Grid.Column="1" 
                                        Grid.Row="0"
-                                               Placeholder="Length"
-                                               Text="{Binding SheetLength}" TextColor="Black" Keyboard="Numeric">
+                                        Placeholder="Length"
+                                        Text="{Binding SheetLength}"
+                                       Keyboard="Numeric">
                                     <Entry.Behaviors>
                                         <xct:MultiValidationBehavior 
                                                     x:Name="sheetLengthMultiValidation"
@@ -138,8 +157,9 @@
 
                                 <Entry Grid.Column="2" 
                                        Grid.Row="0"
-                                               Placeholder="Kerf"
-                                               Text="{Binding KerfWidth}" TextColor="Black" Keyboard="Numeric">
+                                        Placeholder="Kerf"
+                                        Text="{Binding KerfWidth}"
+                                       Keyboard="Numeric">
                                     <Entry.Behaviors>
                                         <xct:MultiValidationBehavior 
                                                     x:Name="kerfMultiValidation"
@@ -156,7 +176,7 @@
 
                                 <Entry Grid.Row="1"
                                        Grid.ColumnSpan="3"
-                                       Placeholder="Title" 
+                                       Placeholder="Title"
                                        Text="{Binding Title}"/>
 
                                 <Label Grid.Column="4"
@@ -166,8 +186,8 @@
                                        FontFamily="SolidAwesome" 
                                        Text="&#xf00c;" 
                                        FontSize="Title"
-                                       VerticalOptions="Center" 
-                                       BackgroundColor="White">
+                                       VerticalOptions="Center"
+                                       TextColor="Green">
                                     <Label.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding SetSheetDimensionsCommand}"/>
                                     </Label.GestureRecognizers>
@@ -209,16 +229,16 @@
                             </Grid>
                         </Grid>
                         
-                        <BoxView Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="LightGray" HeightRequest="3" />
 
                     </Grid>
+                        <BoxView BackgroundColor="LightGray" HeightRequest="3"/>
 
                     <Grid 
                         ColumnDefinitions="*, *, *" 
                         RowDefinitions="Auto,*"
                         IsVisible="{Binding CanAddPanels}">
 
-                        <Button Grid.Column="0" Text="CALCULATE" Margin="8,0,0,0" />
+                        <Button Grid.Column="0" Text="CALCULATE" Margin="8,0,0,0" Command="{Binding CalculateCommand}" />
 
                         <Label Grid.Column="1" Text="Items" HorizontalOptions="Center"
                                    VerticalOptions="Center"
@@ -232,14 +252,13 @@
                                 Margin="0,0,8,0"
                                 WidthRequest="20"
                                 HeightRequest="20"
-                                Clicked="Button_Clicked"/>
+                                Command="{Binding AddBoxCommand}" />
 
                         <BoxView Grid.Row="1" Grid.ColumnSpan="3"
-                        BackgroundColor="LightGray" HeightRequest="3" Margin="-21,5,-21,0" />
+                        BackgroundColor="LightGray" HeightRequest="3" />
                     </Grid>
 
-                    <CollectionView 
-                        x:Name="list"
+                    <CollectionView
                         IsVisible="{Binding CanAddPanels}"
                         SelectionMode="None"
                         ItemsSource="{Binding Panels}">
@@ -256,63 +275,54 @@
                                           IsVisible="{Binding EditMode,Converter={xct:InvertedBoolConverter}}">
                                         <Label Grid.Column="0" 
                                                    Text="Width:" 
-                                                   TextColor="Black"
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"/>
-                                        <Label Grid.Column="1" Text="{Binding Width}" 
-                                                   TextColor="Gray"                                                    
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"/>
+                                                   Style="{StaticResource DataLabelStyle}"/>
+                                        <Label Grid.Column="1" 
+                                               Text="{Binding Width}" 
+                                               Style="{StaticResource DataValueLabelStyle}"/>
 
-                                        <Label Grid.Column="2" Text="Height:" 
-                                                   TextColor="Black"
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"/>
-                                        <Label Grid.Column="3" Text="{Binding Length}" 
-                                                   TextColor="Gray"                                                                    
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold" />
+                                        <Label Grid.Column="2" 
+                                               Text="Height:" 
+                                               Style="{StaticResource DataLabelStyle}"/>
+                                        <Label Grid.Column="3" 
+                                               Text="{Binding Length}" 
+                                               Style="{StaticResource DataValueLabelStyle}" />
 
-                                        <Label Grid.Column="4" Text="Count:" TextColor="Black"
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold"/>
-                                        <Label Grid.Column="5" Text="{Binding Count}"
-                                                   TextColor="Gray"                                                                   
-                                                   FontSize="Medium"
-                                                   FontAttributes="Bold" />
+                                        <Label Grid.Column="4" 
+                                               Text="Count:" TextColor="Black"
+                                               Style="{StaticResource DataLabelStyle}"/>
+                                        <Label Grid.Column="5" 
+                                               Text="{Binding Count}"
+                                               Style="{StaticResource DataValueLabelStyle}"/>
 
                                         <Label Grid.Column="0"
                                                Grid.Row="1"
                                                Text="Title:" 
-                                               TextColor="Black"
-                                               FontSize="Medium"
-                                               FontAttributes="Bold"/>
+                                               Style="{StaticResource DataLabelStyle}"/>
                                         <Label Grid.Column="1" 
                                                Grid.ColumnSpan="2"
                                                Grid.Row="1"
                                                Text="{Binding Title}"
-                                               TextColor="Gray"                                                                   
-                                               FontSize="Medium"
-                                               FontAttributes="Bold" />
+                                               Style="{StaticResource DataValueLabelStyle}" />
 
                                         <Grid.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference list}}" CommandParameter="{Binding .}" />
+                                            <TapGestureRecognizer Command="{Binding BindingContext.EditCommand, Source={x:Reference page}}" CommandParameter="{Binding .}" />
                                         </Grid.GestureRecognizers>
                                     </Grid>
                                     
                                     <Grid ColumnDefinitions="2*,2*,2*,*,*" 
                                           RowDefinitions="Auto,Auto,*"
+                                          RowSpacing="0"
                                           IsVisible="{Binding EditMode}">
-                                        <Entry Grid.Column="0" 
+                                        <Entry Grid.Column="0"
+                                               PlaceholderColor="Silver"
                                                Placeholder="Width"
                                                Text="{Binding Width}" 
                                                TextColor="Black"
                                                Keyboard="Numeric">
                                             <Entry.Behaviors>
                                                 <xct:MultiValidationBehavior x:Name="WidthMultiValidation"
-                                                                             IsValid="{Binding BindingContext.IsWidthValid, Source={x:Reference list}}"
+                                                                             IsValid="{Binding BindingContext.IsWidthValid, Source={x:Reference page}}"
                                                                              InvalidStyle="{StaticResource InvalidEntryStyle}"
-                                                                             
                                                                              >
                                                     <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
                                                                                    xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
@@ -329,12 +339,13 @@
                                         </Entry>
 
                                         <Entry Grid.Column="1" 
+                                               PlaceholderColor="Silver"
                                                Placeholder="Length"
                                                Text="{Binding Length}" TextColor="Black" Keyboard="Numeric">
                                             <Entry.Behaviors>
                                                 <xct:MultiValidationBehavior 
                                                     x:Name="LengthMultiValidation"
-                                                    IsValid="{Binding BindingContext.IsLengthValid, Source={x:Reference list}}"
+                                                    IsValid="{Binding BindingContext.IsLengthValid, Source={x:Reference page}}"
                                                     InvalidStyle="{StaticResource InvalidEntryStyle}">
                                                     <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
                                                                                    xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
@@ -350,13 +361,14 @@
                                             </Entry.Behaviors>
                                         </Entry>
 
-                                        <Entry Grid.Column="2" 
+                                        <Entry Grid.Column="2"
+                                               PlaceholderColor="Silver" 
                                                Placeholder="Count"
                                                Text="{Binding Count}" TextColor="Black" Keyboard="Numeric">
                                             <Entry.Behaviors>
                                                 <xct:MultiValidationBehavior 
                                                     x:Name="CountMultiValidation"
-                                                    IsValid="{Binding BindingContext.IsCountValid, Source={x:Reference list}}"
+                                                    IsValid="{Binding BindingContext.IsCountValid, Source={x:Reference page}}"
                                                     InvalidStyle="{StaticResource InvalidEntryStyle}">
                                                     <xct:NumericValidationBehavior MaximumDecimalPlaces="0" 
                                                                                    xct:MultiValidationBehavior.Error="Value is not integer"/>
@@ -372,6 +384,7 @@
 
                                         <Entry Grid.Row="1"
                                                Grid.ColumnSpan="3"
+                                               PlaceholderColor="Silver"
                                                Placeholder="Title" 
                                                Text="{Binding Title}"/>
 
@@ -379,9 +392,10 @@
                                                Grid.RowSpan="3"
                                                FontFamily="SolidAwesome" Text="&#xf00c;" FontSize="Title"
                                                VerticalOptions="Center"
-                                               HorizontalOptions="End" BackgroundColor="White">
+                                               HorizontalOptions="End"
+                                               TextColor="Green">
                                             <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.SetBoxDimensionsCommand, Source={x:Reference list}}"
+                                                <TapGestureRecognizer Command="{Binding BindingContext.SetBoxDimensionsCommand, Source={x:Reference page}}"
                                                                       CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
@@ -390,9 +404,10 @@
                                                Grid.RowSpan="3"
                                                FontFamily="SolidAwesome" Text="&#xf1f8;" FontSize="Title"
                                                VerticalOptions="Center"
-                                               HorizontalOptions="End" BackgroundColor="White">
+                                               HorizontalOptions="End" 
+                                               TextColor="Red">
                                             <Label.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding BindingContext.RemoveBoxCommand, Source={x:Reference list}}"
+                                                <TapGestureRecognizer Command="{Binding BindingContext.RemoveBoxCommand, Source={x:Reference page}}"
                                                                       CommandParameter="{Binding .}"/>
                                             </Label.GestureRecognizers>
                                         </Label>
