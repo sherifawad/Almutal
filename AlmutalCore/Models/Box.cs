@@ -8,11 +8,11 @@ namespace AlmutalCore.Models
     {
         private string title;
 
-        public Box(double length, double width, string tile = null )
+        public Box(double length, double width, string title = null)
         {
             Length = length;
             Width = width;
-            Title = tile;
+            Title = title;
         }
 
         public Box()
@@ -28,17 +28,17 @@ namespace AlmutalCore.Models
         public int ParentId { get; set; }
         public int Id { get; set; }
         public string Color { get; set; }
-        public string Title 
+        public string Dimension => $"{Width}*{Length}";
+        public string Title
         {
-            get 
-            { 
-                if(string.IsNullOrEmpty(title) || string.IsNullOrWhiteSpace(title))
-                    return $"{Width}*{Length}";
+            get => title;
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                    title = Dimension;
                 else
-                    return title; 
+                    title = value;
             }
-            set => title = value; 
         }
-
     }
 }

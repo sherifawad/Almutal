@@ -1,4 +1,7 @@
 ﻿using Almutal.Services;
+using Almutal.Services.DialogService;
+using Almutal.Services.MessagingService;
+using Almutal.Services.NavigationService;
 using Almutal.Views;
 using System;
 using Xamarin.Forms;
@@ -14,9 +17,12 @@ namespace Almutal
         {
             InitializeComponent();
 
+            DependencyService.Register<IDialogService, ShellDialogService>();
+            DependencyService.Register<INavigationService, ShellRoutingService>();
+            DependencyService.Register<IMessagingService, MessagingService>();
             DependencyService.Register<MockDataStore>();
-            //MainPage = new AppShell();
-            MainPage = new DataEntryView();
+            MainPage = new AppShell();
+            //MainPage = new DataEntryView();
         }
 
         protected override void OnStart()

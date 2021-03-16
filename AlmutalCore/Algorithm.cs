@@ -12,8 +12,8 @@ namespace AlmutalCore
         public double Width { get; private set; }
         public double Length { get; private set; }
         public double Kerf { get; private set; }
+        public List<Box> Boxes { get; private set; }
 
-        private readonly List<Box> Boxes;
 
         private List<Box> Free = new List<Box>();
 
@@ -63,6 +63,7 @@ namespace AlmutalCore
                         Width = box.Width,
                         Length = box.Length,
                         Id = id,
+                        Title = box.Title
                         //Area = box.Width * box.Length
                     });
                 //}

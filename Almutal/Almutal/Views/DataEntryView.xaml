@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<local:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:local="clr-namespace:Almutal"
              local:ViewModelLocator.AutoWireViewModel="True"
              x:Class="Almutal.Views.DataEntryView"
              x:Name="page">
-    <ContentPage.Resources>
+    <local:BasePage.Resources>
         <ResourceDictionary>
 
             <Style TargetType="Entry">
@@ -33,7 +33,7 @@
                 <Setter Property="FontAttributes"
                     Value="Bold" />
             </Style>
-            
+
             <Style x:Key="DataValueLabelStyle"
                TargetType="Label">
                 <Setter Property="TextColor"
@@ -41,15 +41,17 @@
                 <Setter Property="FontAttributes"
                     Value="Bold" />
             </Style>
+
         </ResourceDictionary>
-    </ContentPage.Resources>
-    <ContentPage.Content>
+    </local:BasePage.Resources>
+    <local:BasePage.Content>
         <Frame Padding="4" BackgroundColor="Silver" HasShadow="False" Margin="10" >
             <Frame HasShadow="False" Padding="0">
-                <StackLayout BackgroundColor="White">
-                    
+                <Grid RowDefinitions="Auto,Auto,*"
+                    BackgroundColor="White">
                     <Grid
-                          HorizontalOptions="Center">
+                        RowDefinitions="Auto,*"
+                        HorizontalOptions="Center">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding SheetEditCommand}" />
                         </Grid.GestureRecognizers>
@@ -71,7 +73,7 @@
                                 RowDefinitions="Auto,*"
                                 ColumnDefinitions="Auto,*,Auto,*,Auto,*"
                                   IsVisible="{Binding SheetEditMode, Converter={xct:InvertedBoolConverter}}">
-                                
+
                                 <Label Grid.Column="0" 
                                        Text="Width:"
                                        Style="{StaticResource DataLabelStyle}"/>
@@ -83,7 +85,7 @@
                                 <Label Grid.Column="2" 
                                        Text="Length:" 
                                        Style="{StaticResource DataLabelStyle}"/>
-                                
+
                                 <Label Grid.Column="3" 
                                        Text="{Binding SheetLength}" 
                                        Style="{StaticResource DataValueLabelStyle}" />
@@ -91,7 +93,7 @@
                                 <Label Grid.Column="4" 
                                        Text="Kerf:" 
                                        Style="{StaticResource DataLabelStyle}"/>
-                                
+
                                 <Label Grid.Column="5"
                                        Text="{Binding KerfWidth}"
                                        Style="{StaticResource DataValueLabelStyle}"/>
@@ -112,7 +114,7 @@
                                   RowDefinitions="*,*,Auto"
                                   RowSpacing="0"
                                   IsVisible="{Binding SheetEditMode}">
-                                
+
                                 <Entry Grid.Column="0" 
                                        Grid.Row="0"
                                        Placeholder="Width"
@@ -203,7 +205,7 @@
                                                 Text="{Binding Errors[0], Source={x:Reference kerfMultiValidation}}"
                                                 TextColor="Red"/>
                                 </Frame>
-                                
+
                                 <Frame Grid.Row="2" 
                                        Grid.ColumnSpan="3"
                                        Padding="0" 
@@ -214,7 +216,7 @@
                                                 Text="{Binding Errors[0], Source={x:Reference sheetLengthMultiValidation}}"
                                                 TextColor="Red"/>
                                 </Frame>
-                                
+
                                 <Frame Grid.Row="2" 
                                        Grid.ColumnSpan="3"
                                        Padding="0" 
@@ -228,17 +230,25 @@
 
                             </Grid>
                         </Grid>
-                        
-
                     </Grid>
-                        <BoxView BackgroundColor="LightGray" HeightRequest="3"/>
+                    
 
                     <Grid 
-                        ColumnDefinitions="*, *, *" 
-                        RowDefinitions="Auto,*"
+                        Grid.Row="1"
+                        ColumnDefinitions="*, Auto, *" 
                         IsVisible="{Binding CanAddPanels}">
+                        <BoxView  
+                            Grid.ColumnSpan="3"
+                            VerticalOptions="Start"
+                            BackgroundColor="LightGray" HeightRequest="3">
+                            <BoxView.Triggers>
+                                <DataTrigger TargetType="BoxView" Binding="{Binding Source={x:Reference button}, Path=IsEnabled}" Value="true">
+                                    <Setter Property="BackgroundColor" Value="{Binding Source={x:Reference button}, Path=BackgroundColor}" />
+                                </DataTrigger>
+                            </BoxView.Triggers>
+                        </BoxView>
 
-                        <Button Grid.Column="0" Text="CALCULATE" Margin="8,0,0,0" Command="{Binding CalculateCommand}" />
+                        <Button Grid.Column="0" Text="CALCULATE" Command="{Binding CalculateCommand}"  />
 
                         <Label Grid.Column="1" Text="Items" HorizontalOptions="Center"
                                    VerticalOptions="Center"
@@ -247,50 +257,62 @@
                                    FontSize="Large"
                                    />
 
-                        <Button Grid.Column="2" 
-                                Text="ADD" 
-                                Margin="0,0,8,0"
-                                WidthRequest="20"
-                                HeightRequest="20"
-                                Command="{Binding AddBoxCommand}" />
+                        <Button 
+                            x:Name="button"
+                            Grid.Column="2"
+                            Text="ADD" 
+                            WidthRequest="20"
+                            HeightRequest="20"
+                            Command="{Binding AddBoxCommand}" />
 
-                        <BoxView Grid.Row="1" Grid.ColumnSpan="3"
-                        BackgroundColor="LightGray" HeightRequest="3" />
+
+                        <BoxView
+                        Grid.ColumnSpan="3"
+                        VerticalOptions="End"
+                        HeightRequest="3">
+                            <BoxView.Triggers>
+                                <DataTrigger TargetType="BoxView" Binding="{Binding Source={x:Reference button}, Path=IsEnabled}" Value="true">
+                                    <Setter Property="BackgroundColor" Value="{Binding Source={x:Reference button}, Path=BackgroundColor}" />
+                                </DataTrigger>
+                            </BoxView.Triggers>
+                        </BoxView>
                     </Grid>
-
                     <CollectionView
+                        Grid.Row="2"
                         IsVisible="{Binding CanAddPanels}"
                         SelectionMode="None"
                         ItemsSource="{Binding Panels}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <Grid RowDefinitions="Auto,*"
-                                      Padding="8">
-                                    
-                                    <Grid ColumnDefinitions="Auto,*,Auto,*,Auto,*"
+                                <Grid RowDefinitions="Auto,*" >
+                                    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
                                           RowDefinitions="Auto,Auto"
                                           VerticalOptions="Center"
-                                          Padding="15,0,0,0"
-                                          Margin="0,0,-20,0"
                                           IsVisible="{Binding EditMode,Converter={xct:InvertedBoolConverter}}">
                                         <Label Grid.Column="0" 
-                                                   Text="Width:" 
+                                               FontSize="Body" 
+                                                   Text="Width" 
                                                    Style="{StaticResource DataLabelStyle}"/>
                                         <Label Grid.Column="1" 
+                                               FontSize="Body" 
                                                Text="{Binding Width}" 
                                                Style="{StaticResource DataValueLabelStyle}"/>
 
                                         <Label Grid.Column="2" 
-                                               Text="Height:" 
+                                               FontSize="Body" 
+                                               Text="Height" 
                                                Style="{StaticResource DataLabelStyle}"/>
                                         <Label Grid.Column="3" 
+                                               FontSize="Body" 
                                                Text="{Binding Length}" 
                                                Style="{StaticResource DataValueLabelStyle}" />
 
                                         <Label Grid.Column="4" 
-                                               Text="Count:" TextColor="Black"
+                                               FontSize="Body" 
+                                               Text="Count"
                                                Style="{StaticResource DataLabelStyle}"/>
                                         <Label Grid.Column="5" 
+                                               FontSize="Body" 
                                                Text="{Binding Count}"
                                                Style="{StaticResource DataValueLabelStyle}"/>
 
@@ -450,8 +472,8 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                </StackLayout>
+                </Grid>
             </Frame>
         </Frame>
-    </ContentPage.Content>
-</ContentPage>
+    </local:BasePage.Content>
+</local:BasePage>

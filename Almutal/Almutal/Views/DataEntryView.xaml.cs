@@ -15,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace Almutal.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DataEntryView : ContentPage
+    public partial class DataEntryView : BasePage
     {
         public DataEntryView()
         {

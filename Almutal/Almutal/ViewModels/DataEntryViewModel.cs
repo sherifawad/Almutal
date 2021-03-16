@@ -1,11 +1,12 @@
 ﻿using Almutal.Helpers;
 using Almutal.Models;
+using AlmutalCore;
 using AlmutalCore.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -139,7 +140,38 @@ namespace Almutal.ViewModels
 
         private async Task Calculate()
         {
-            await Task.FromResult(true);
+            if (Panels.Count <= 0 || !SheetLength.HasValue || SheetLength == 0 ||
+                !SheetWidth.HasValue || SheetWidth == 0 || !KerfWidth.HasValue)
+                return;
+
+            var boxes = new List<Box>();
+            try
+            {
+                foreach (var panel in Panels)
+                {
+                    for (int i = 0; i < panel.Count; i++)
+                    {
+                        boxes.Add(new Box((double)panel.Length, (double)panel.Width, panel.Title));
+
+                    }
+                }
+                if (boxes.Count <= 0)
+                    return;
+
+                var jsonBoxes = JsonConvert.SerializeObject(boxes);
+
+                var algorithm = new Algorithm((double)SheetWidth, (double)SheetLength, boxes, (double)KerfWidth);
+
+                var jsonString = JsonConvert.SerializeObject(algorithm);
+
+                await _navigationService.PushAsync<PanelsViewModel>($"algorithm={jsonString}&boxes={jsonBoxes}");
+            }
+            catch (Exception ex)
+            {
+               await _dialogService.DisplayAlert("Error", ex.Message, "OK");
+            }
+
+
         }
 
         #endregion
