@@ -2,6 +2,7 @@
 using Almutal.Services.DialogService;
 using Almutal.Services.MessagingService;
 using Almutal.Services.NavigationService;
+using Almutal.Services.UnitOfWork;
 using Almutal.Views;
 using System;
 using Xamarin.Forms;
@@ -20,6 +21,7 @@ namespace Almutal
             DependencyService.Register<IDialogService, ShellDialogService>();
             DependencyService.Register<INavigationService, ShellRoutingService>();
             DependencyService.Register<IMessagingService, MessagingService>();
+            DependencyService.Register<IUnitOfWork, UnitOfWork>();
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
             //MainPage = new DataEntryView();

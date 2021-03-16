@@ -1,6 +1,5 @@
 ﻿using Almutal.Helpers;
-using AlmutalCore;
-using AlmutalCore.Models;
+using DataBase.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

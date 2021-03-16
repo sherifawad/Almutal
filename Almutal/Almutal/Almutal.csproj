@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\AlmutalCore\AlmutalCore.csproj" />
+    <ProjectReference Include="..\..\..\Stores\DataBase\DataBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
