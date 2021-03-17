@@ -4,7 +4,8 @@
              x:Class="Almutal.Views.ItemsPage"
              xmlns:sh="http://sharpnado.com"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:Almutal.ViewModels"  
+             xmlns:local="clr-namespace:Almutal"  
+             xmlns:viewModel="clr-namespace:Almutal.ViewModels"  
              xmlns:model="clr-namespace:Almutal.Models"  
              x:Name="BrowseItemsPage">
 
@@ -35,39 +36,74 @@
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <RefreshView x:DataType="viewModel:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
+                        BackgroundColor="WhiteSmoke"
                 ItemsSource="{Binding Items}"
                 SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout 
+                    Orientation="Vertical"
+                    HorizontalItemSpacing="10"
+                    VerticalItemSpacing="10"
+                                 Span="2" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10" x:DataType="model:Item">
                         <Grid>
 
-                            <sh:Shadows Style="{StaticResource shadowStyle}">
-                                <Grid RowDefinitions="Auto,*">
-                                    <BoxView BackgroundColor="White" CornerRadius="10"
-                                             Grid.RowSpan="2"/>
-                                    <sh:Shadows CornerRadius="75"  
-            Shades="{sh:SingleShade Offset='-10, 0',
-                                    Opacity=0.7,
-                                    Color=Silver}">
-                                        <Frame WidthRequest="140"
-                                 HeightRequest="140"
+                            <sh:Shadows CornerRadius="10" Shades="{sh:SingleShade Offset='0, 5',
+                                    Opacity=1,
+                                    Color=#e1d9cd}">
+
+                                <Grid RowDefinitions="*,Auto" ColumnDefinitions="*,*">
+                                    <BoxView 
+                                        Grid.ColumnSpan="2"
+                                        Grid.RowSpan="2"
+                                        BackgroundColor="White" CornerRadius="10"/>
+
+                                    <Frame
+                                        Grid.Column="1"
+                                        Grid.Row="1"
+                                        HasShadow="False" 
+                                        Padding="0"
+                                        IsClippedToBounds="True">
+
+                                        <Image 
+                                        WidthRequest="100"
+                                        HeightRequest="100"
+
+                                        Margin="0,0,-10,-10"
+                                        Source="{local:ImageResource  Product.png}"  Aspect="AspectFit" />
+
+                                    </Frame>
+
+
+
+                                    <!--<sh:Shadows 
+                                        Grid.ColumnSpan="2"
+                                        Grid.RowSpan="2"
+                                        VerticalOptions="End"
+                                        HorizontalOptions="End"
+                                        CornerRadius="35">-->
+
+                                        <!--<Frame WidthRequest="60"
+                                 HeightRequest="60"
                                                HasShadow="False"
-                                               CornerRadius="70"
+                                               CornerRadius="30"
                                                  IsClippedToBounds="True"
+                                               Margin="8"
                                                Padding="0"
-                                               BackgroundColor="White"
+                                               BackgroundColor="Gray"
                                  HorizontalOptions="Center"
-                                         VerticalOptions="End"/>
-                                    </sh:Shadows>
+                                         VerticalOptions="Center"/>-->
+                                    <!--</sh:Shadows>-->
 
 
-                                    <Label Grid.Row="1" Text="{Binding Text}" 
+                                    <Label Text="{Binding Text}" 
                             LineBreakMode="NoWrap" 
-                                      VerticalOptions="End"
-                                      HorizontalOptions="Center"
+                                           Padding="8"
                             Style="{DynamicResource ListItemTextStyle}" 
                                       TextColor="Black"
                             FontSize="16" />
@@ -86,7 +122,7 @@
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:ItemsViewModel}}, Path=ItemTapped}"		
                                 CommandParameter="{Binding .}">
                             </TapGestureRecognizer>
                         </StackLayout.GestureRecognizers>

@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace SportsCashier.Helpers
+namespace Almutal.Helpers
 {
     public static class Utils
     {

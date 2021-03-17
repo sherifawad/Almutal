@@ -7,10 +7,21 @@
 
   <ItemGroup>
     <None Remove="Fonts\fa-solid-900.ttf" />
+    <None Remove="Images\Attribute.png" />
+    <None Remove="Images\Client.png" />
+    <None Remove="Images\Product.jpg" />
+    <None Remove="Images\Product.png" />
+    <None Remove="Images\ServiceType.png" />
+    <None Remove="Images\Value.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Fonts\fa-solid-900.ttf" />
+    <EmbeddedResource Include="Images\Attribute.png" />
+    <EmbeddedResource Include="Images\Client.png" />
+    <EmbeddedResource Include="Images\Product.png" />
+    <EmbeddedResource Include="Images\ServiceType.png" />
+    <EmbeddedResource Include="Images\Value.png" />
   </ItemGroup>
 
   <ItemGroup>
