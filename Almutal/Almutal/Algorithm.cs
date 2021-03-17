@@ -40,7 +40,6 @@ namespace Almutal
             if (boxes == null)
                 return null;
             var result = new List<Box>();
-            var id = 0;
 
             foreach (var box in boxes)
             {
@@ -62,14 +61,11 @@ namespace Almutal
                     {
                         Width = box.Width,
                         Length = box.Length,
-                        Id = id,
                         Title = box.Title
                         //Area = box.Width * box.Length
                     });
                 //}
 
-
-                id++;
             }
             result = result.OrderByDescending(x => Math.Max(x.Width, x.Length)).ToList();
             //result = result.OrderByDescending(x => x.Area).ToList();

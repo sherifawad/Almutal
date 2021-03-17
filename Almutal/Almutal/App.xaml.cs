@@ -17,6 +17,7 @@ namespace Almutal
         public App()
         {
             InitializeComponent();
+            Sharpnado.Shades.Initializer.Initialize(loggerEnable: false);
 
             DependencyService.Register<IDialogService, ShellDialogService>();
             DependencyService.Register<INavigationService, ShellRoutingService>();

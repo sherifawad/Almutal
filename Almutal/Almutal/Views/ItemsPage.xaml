@@ -2,10 +2,31 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Almutal.Views.ItemsPage"
+             xmlns:sh="http://sharpnado.com"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:Almutal.ViewModels"  
              xmlns:model="clr-namespace:Almutal.Models"  
              x:Name="BrowseItemsPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="shadowStyle" ApplyToDerivedTypes="True" TargetType="sh:Shadows" >
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Shades">
+                    <sh:ImmutableShades>
+                        <sh:Shade BlurRadius="10"
+                      Opacity="1"
+                      Offset="-10,-10"
+                      Color="White" />
+                        <sh:Shade BlurRadius="10"
+                      Opacity="1"
+                      Offset="6, 6"
+                      Color="#19000000" />
+                    </sh:ImmutableShades>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
@@ -21,14 +42,47 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10" x:DataType="model:Item">
-                        <Label Text="{Binding Text}" 
+                        <Grid>
+
+                            <sh:Shadows Style="{StaticResource shadowStyle}">
+                                <Grid RowDefinitions="Auto,*">
+                                    <BoxView BackgroundColor="White" CornerRadius="10"
+                                             Grid.RowSpan="2"/>
+                                    <sh:Shadows CornerRadius="75"  
+            Shades="{sh:SingleShade Offset='-10, 0',
+                                    Opacity=0.7,
+                                    Color=Silver}">
+                                        <Frame WidthRequest="140"
+                                 HeightRequest="140"
+                                               HasShadow="False"
+                                               CornerRadius="70"
+                                                 IsClippedToBounds="True"
+                                               Padding="0"
+                                               BackgroundColor="White"
+                                 HorizontalOptions="Center"
+                                         VerticalOptions="End"/>
+                                    </sh:Shadows>
+
+
+                                    <Label Grid.Row="1" Text="{Binding Text}" 
+                            LineBreakMode="NoWrap" 
+                                      VerticalOptions="End"
+                                      HorizontalOptions="Center"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                                      TextColor="Black"
+                            FontSize="16" />
+                                </Grid>
+                            </sh:Shadows>
+
+                        </Grid>
+                        <!--<Label Text="{Binding Text}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
                         <Label Text="{Binding Description}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemDetailTextStyle}"
-                            FontSize="13" />
+                            FontSize="13" />-->
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
