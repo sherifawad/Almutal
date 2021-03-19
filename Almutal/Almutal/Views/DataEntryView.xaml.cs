@@ -1,5 +1,6 @@
 ﻿using Almutal.Helpers;
 using Almutal.Models;
+using Almutal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +20,13 @@ namespace Almutal.Views
         public DataEntryView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            BindingContext = new DataEntryViewModel();
         }
     }
 }

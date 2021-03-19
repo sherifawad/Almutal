@@ -7,7 +7,7 @@ using Xamarin.Forms;
 namespace Almutal.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
-    public class ItemDetailViewModel : BaseViewModel
+    public class ItemDetailViewModel : OldBaseViewModel
     {
         private string itemId;
         private string text;

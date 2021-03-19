@@ -2,6 +2,7 @@
 using Almutal.Services.DialogService;
 using Almutal.Services.MessagingService;
 using Almutal.Services.NavigationService;
+using Almutal.Services.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ namespace Almutal
         protected INavigationService _navigationService { get; }
         protected IDialogService _dialogService { get; }
         protected IMessagingService _messagingService { get; }
+        protected IUnitOfWork _unitOfWork { get; }
         protected bool IsBusy { get; set; }
 
         #endregion
@@ -42,6 +44,7 @@ namespace Almutal
             _messagingService = DependencyService.Get<IMessagingService>();
             _navigationService = DependencyService.Get<INavigationService>();
             _dialogService = DependencyService.Get<IDialogService>();
+            _unitOfWork = DependencyService.Get<IUnitOfWork>();
         }
 
         #endregion

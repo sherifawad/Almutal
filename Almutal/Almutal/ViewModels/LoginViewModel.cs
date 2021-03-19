@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Almutal.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : OldBaseViewModel
     {
         public Command LoginCommand { get; }
 

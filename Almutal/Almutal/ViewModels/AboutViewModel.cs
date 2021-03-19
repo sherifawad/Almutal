@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Almutal.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class AboutViewModel : OldBaseViewModel
     {
         public AboutViewModel()
         {

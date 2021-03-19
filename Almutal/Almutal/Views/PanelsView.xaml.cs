@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Almutal.ViewModels;
 
 namespace Almutal.Views
 {
@@ -24,6 +25,13 @@ namespace Almutal.Views
             InitializeComponent();
 
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            BindingContext = new PanelsViewModel();
+        }
+
 
         protected override void OnSizeAllocated(double width, double height)
         {

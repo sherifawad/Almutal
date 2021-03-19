@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace Almutal.ViewModels
 {
-    public class NewItemViewModel : BaseViewModel
+    public class NewItemViewModel : OldBaseViewModel
     {
         private string text;
         private string description;

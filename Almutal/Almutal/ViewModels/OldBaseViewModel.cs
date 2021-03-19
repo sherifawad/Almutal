@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace Almutal.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class OldBaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 

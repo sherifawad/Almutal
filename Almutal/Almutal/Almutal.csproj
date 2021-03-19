@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Stores\DataBase\DataBase.csproj" />
+    <ProjectReference Include="..\..\DataBase\DataBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
