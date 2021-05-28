@@ -1,4 +1,5 @@
 ﻿using Almutal.Extensions;
+using Almutal.Services.UnitOfWork;
 using DataBase.Models;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Almutal.ViewModels
         #endregion
 
         #region Public Properties
-
+        public IUnitOfWork _unitOfWork => DependencyService.Get<IUnitOfWork>();
         public string Name { get; set; }
         public string Date { get; set; }
         public ObservableCollection<ServiceType> ClientServiceTypes { get; set; }

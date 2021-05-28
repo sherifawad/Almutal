@@ -29,7 +29,7 @@ namespace Almutal.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            BindingContext = new PanelsViewModel();
+            //BindingContext = new PanelsViewModel();
         }
 
 

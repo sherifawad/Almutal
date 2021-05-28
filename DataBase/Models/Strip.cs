@@ -6,13 +6,15 @@ namespace DataBase.Models
 {
     public class Strip
     {
-        public int Id { get; private set; }
-        public List<double> Cuts { get; private set;}
-
-        public Strip(int id, List<double> cuts)
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public double Length { get; set;}
+        public string Color { get; set;}
+        public Strip(double length, string title = null, int id = 0 )
         {
             Id = id;
-            Cuts = cuts;
+            Length = length;
+            Title = title;
         }
     }
 }

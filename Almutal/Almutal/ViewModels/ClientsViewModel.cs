@@ -1,4 +1,5 @@
 ﻿using Almutal.Helpers;
+using Almutal.Services.UnitOfWork;
 using DataBase.Models;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,15 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Almutal.ViewModels
 {
     public class ClientsViewModel : BaseViewModel
     {
         #region Public Properties
+
+        public IUnitOfWork _unitOfWork => DependencyService.Get<IUnitOfWork>();
 
         public ObservableCollection<Client> Clients { get; set; }
 

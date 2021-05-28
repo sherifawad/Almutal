@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using DataBase.Models;
 using Almutal.Helpers;
+using System.Threading;
 
 namespace Almutal
 {
@@ -89,8 +90,11 @@ namespace Almutal
             var free = new List<Node>();
             var id = 0;
             var noOfCuttedBoxes = 0;
+            var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(15)).Token;
             do
             {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
                 var boxes = new List<Box>();
 
                 var rootNode = CreateNode(id);

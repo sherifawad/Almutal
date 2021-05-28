@@ -1,6 +1,8 @@
 ﻿using Almutal.Models;
+using DataBase.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -12,6 +14,8 @@ namespace Almutal.ViewModels
         private string text;
         private string description;
 
+        public ObservableCollection<Supplier> Supplieres { get; set; }
+        public Supplier SelectedSupplier { get; set; }
         public NewItemViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);

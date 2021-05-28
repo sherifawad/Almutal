@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Almutal.Helpers;
+using DataBase.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Almutal
 {
@@ -9,8 +12,7 @@ namespace Almutal
     {
         #region Public Properties
 
-        public double[] CutList { get; private set; }
-        public double BarLength1 { get; }
+        public Strip[] CutList { get; private set; }
         public double BarLength { get; private set; }
         public double CutterEndWidth { get; private set; } // نسوية الرايش بالمبرد حياكل اد ايه
         public double BladeWidth { get; private set; }
@@ -20,10 +22,9 @@ namespace Almutal
 
         #region Constructor
 
-        public StripCutAlgorithm(double[] cutList, double barLength, double cutterEndWidth = 0, double bladeWidth = 0, int[] bins = null)
+        public StripCutAlgorithm(Strip[] cutList, double barLength, double cutterEndWidth = 0, double bladeWidth = 0, int[] bins = null)
         {
             CutList = cutList;
-            BarLength1 = barLength;
             CutterEndWidth = cutterEndWidth;
             BarLength = barLength - CutterEndWidth;  // ازالة جزء الرايش مت اخر قطعة باقية من اول طرفها عشان ممكن نستخدمعا و نقطع منها تاني
             BladeWidth = bladeWidth;
@@ -36,14 +37,12 @@ namespace Almutal
 
         private void ListConstruction()
         {
-            CutList = CutList.OrderByDescending(x => x).ToArray();
-
+            var list = CutList.OrderByDescending(x => x.Length).ToList();
+            list.ForEach(x => {
+                x.Length = x.Length + CutterEndWidth + BladeWidth;
+            });
             // نزود الرايش  لكل قطعة عشان لما يتشال مينقص طول القطعة اللي احنا عايزينها
             // نزود علي طوول كل قطعة ضخة المنشار فاللي حياكله المنشار  مينقص طول القطعة اللي احنا عايزينها
-            for (int i = 0; i < CutList.Length; i++)
-            {
-                CutList[i] = CutList[i] + CutterEndWidth + BladeWidth;
-            }
 
         }
 
@@ -51,21 +50,26 @@ namespace Almutal
 
         #region Public Methods
 
-        public Dictionary<int, List<double>> best()
+        public List<StockStrip> best()
         {
             Dictionary<int, List<double>> ts = new Dictionary<int, List<double>>();
+            var slist = new List<StockStrip>();
 
             var bins_used = 1;
             double[] binarray = new double[CutList.Length];
             binarray[0] = BarLength;
+            var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(15)).Token;
+
             for (var item = 0; item < CutList.Length; item++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
                 var candidate = -1;
                 double capacity = 0;
 
                 for (var bin = 0; bin < bins_used; bin++)
                 {
-                    if (binarray[bin] >= CutList[item])
+                    if (binarray[bin] >= CutList[item].Length)
                     {
 
                         if (candidate == -1 || binarray[bin] < capacity)
@@ -80,14 +84,14 @@ namespace Almutal
                 if (candidate != -1)
                 {
                     /* Add to candidate bin */
-                    binarray[candidate] -= CutList[item];
+                    binarray[candidate] -= CutList[item].Length;
 
                     Bins[item] = candidate;
                 }
                 else
                 {
                     /* Create a new bin and add to it */
-                    binarray[bins_used] = BarLength - CutList[item];
+                    binarray[bins_used] = BarLength - CutList[item].Length;
 
                     Bins[item] = bins_used;
 
@@ -95,14 +99,19 @@ namespace Almutal
 
                 }
 
-                var cc = ts.FirstOrDefault(x => x.Key == Bins[item]);
-                if (cc.Value == null)
-                    ts.Add(Bins[item], new List<double> { CutList[item] });
+                var cc = slist.FirstOrDefault(x => x.Id == Bins[item]);
+                if (cc == null)
+                {
+                    slist.Add(new StockStrip {Id = Bins[item],
+                        Length = BarLength,
+                    CuttedStrips = new List<Strip> {CutList[item] } 
+                    });
+                }
                 else
-                    cc.Value.Add(CutList[item]);
+                    cc.CuttedStrips.Add(CutList[item]);
             }
 
-            return ts;
+            return slist;
 
         }
 

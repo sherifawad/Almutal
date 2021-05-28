@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:dm="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="Almutal.Views.NewItemPage"
              Shell.PresentationMode="ModalAnimated"
              Title="New Item"
@@ -8,8 +10,106 @@
              ios:Page.UseSafeArea="true">
     <ContentPage.Content>
         <StackLayout Spacing="3" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding Text, Mode=TwoWay}" FontSize="Medium" />
+            <Label Text="Name" FontSize="Medium" />
+            <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
+            <xct:Expander>
+                <xct:Expander.Header>
+                    <Label Text="More Details" FontSize="Medium" />
+                </xct:Expander.Header>
+                <xct:Expander.ContentTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Entry Placeholder="Phone" Text="{Binding Phone}"  Keyboard="Telephone" />
+
+                            <Entry Placeholder="Address" Text="{Binding Address}"  />
+
+                            <Entry Placeholder="City" Text="{Binding City}"  />
+
+                            <Entry Placeholder="State" Text="{Binding State}"  />
+                        </StackLayout>
+                    </DataTemplate>
+                </xct:Expander.ContentTemplate>
+            </xct:Expander>
+
+            <CollectionView ItemsSource="{Binding ClientServices}" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="Add Service" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <Entry Placeholder="Service Name" Text="{Binding ServiceType.Name}" HorizontalOptions="FillAndExpand" />
+                                <Label Grid.Column="1" Text="X" TextColor="Red" FontSize="Large" FontAttributes="Bold">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding RemoveServiceCommand}" CommandParameter="{Binding}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Grid.Column="2" Text="+" TextColor="Green" FontSize="Large" FontAttributes="Bold" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddServiceTypeCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+
+                            <FlexLayout BindableLayout.ItemsSource="{Binding ServiceType.Processes}">
+
+                                <BindableLayout.EmptyView>
+                                    <Label Text="Add Process" />
+                                </BindableLayout.EmptyView>
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout>
+                                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                                <Entry Placeholder="Service Name" Text="{Binding Name}" HorizontalOptions="FillAndExpand" />
+                                                <Label Grid.Column="1" Text="X" TextColor="Red" FontSize="Large" FontAttributes="Bold">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding RemoveProcessCommand}" CommandParameter="{Binding}" />
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                                <Label Grid.Column="2" Text="+" TextColor="Green" FontSize="Large" FontAttributes="Bold" >
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding AddServiceTypeCommand}" />
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </Grid>
+                                            <Entry Placeholder="Price" Text="{Binding Price}" Keyboard="Numeric" />
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <Label Text="Start Date: " />
+                                                <DatePicker Grid.Column="1"  Date="{Binding StartDate}" />
+                                            </Grid>
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <Label Text="Finish Date: " />
+                                                <DatePicker Grid.Column="1"  Date="{Binding FinishDate}" />
+                                            </Grid>
+
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <dm:AutoSuggestBox x:Name="supplierSuggestBox" 
+                                                               PlaceholderText="Supplier" 
+                                                               DisplayMemberPath="Name" 
+                                                               TextMemberPath="Name" 
+                                                               Text="{Binding SelectedSupplier.Name}"
+                                                               Focused="SuggestBox_Focused"
+                                                               SuggestionChosen="supplierSuggestBox_SuggestionChosen"
+                                                               TextChanged="supplierSuggestBox_TextChanged" />
+                                                <Label Grid.Column="1" Text="+" TextColor="Green" FontSize="Large" FontAttributes="Bold" >
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding AddSupplierCommand}" />
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </Grid>
+
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+
+                            </FlexLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="AddService" Command="{Binding AddServiceCommand}" HorizontalOptions="FillAndExpand"></Button>
             <Label Text="Description" FontSize="Medium" />
             <Editor Text="{Binding Description, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" />
             <StackLayout Orientation="Horizontal">
@@ -18,5 +118,5 @@
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
-    
+
 </ContentPage>

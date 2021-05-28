@@ -1,10 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <local:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:local="clr-namespace:Almutal"
+                local:ViewModelLocator.AutoWireViewModel="True"
              xmlns:converter="clr-namespace:Almutal.ValueConverters"
               BackgroundColor="Black"
-             x:Class="Almutal.Views.PanelsView">
+             x:Class="Almutal.Views.PanelsView"
+                x:Name="page">
     <local:BasePage.Content>
         <AbsoluteLayout  Margin="20" BackgroundColor="White">
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
@@ -20,50 +23,12 @@
                        HorizontalOptions="End" 
                        VerticalOptions="Center" 
                        Padding="0,0,10,0" />
-                <Button Text="Save" Margin="0,5,0,0" HorizontalOptions="End" VerticalOptions="Center"/>
+                    <Button Text="Save" Margin="0,5,0,0" HorizontalOptions="End" VerticalOptions="Center"/>
                 </StackLayout>
                 <BoxView BackgroundColor="Black" HeightRequest="5"/>
-
-                <!--<ScrollView x:Name="scroll" >
-                    <FlexLayout x:Name="flex" Wrap="Wrap" BackgroundColor="White" BindableLayout.ItemsSource="{Binding Items}"
-                                JustifyContent="SpaceAround" >
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout>
-
-                                    <Frame HasShadow="False" BackgroundColor="Black" Padding="5" Margin="0,0,0,10" >
-                                    <Frame HasShadow="False" Padding="0" >
-                                        <AbsoluteLayout BindableLayout.ItemsSource="{Binding CuttedPanels}" >
-                                            <BindableLayout.ItemTemplate>
-                                                <DataTemplate>
-
-                                                    <Frame Padding="0" 
-                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
-                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
-                                                   AbsoluteLayout.LayoutFlags="None">
-                                                        <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
-                                               HorizontalTextAlignment="Center"
-                                               VerticalTextAlignment="Center" />
-                                                        <Frame.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference scroll}}"
-                                                                  CommandParameter="{Binding .}" />
-                                                        </Frame.GestureRecognizers>
-                                                    </Frame>
-
-                                                </DataTemplate>
-                                            </BindableLayout.ItemTemplate>
-                                        </AbsoluteLayout>
-                                    </Frame>
-                                    </Frame>
-                                    --><!--<BoxView BackgroundColor="Black" HeightRequest="1"/>--><!--
-                                </StackLayout>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </FlexLayout>
-                </ScrollView>-->
-
-                <CollectionView 
-                    x:Name="collection"
+                <Grid>
+                    <CollectionView IsVisible="{Binding IsSheet}"
+                    x:Name="list"
                     ItemsSource="{Binding Items}" 
                     BackgroundColor="Black">
                     <CollectionView.ItemTemplate>
@@ -74,18 +39,13 @@
                                     <AbsoluteLayout BindableLayout.ItemsSource="{Binding CuttedPanels}"
                                       VerticalOptions="FillAndExpand">
                                         <BindableLayout.ItemTemplate>
-                                            <DataTemplate>
-
-                                                <Frame Padding="0" 
-                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
-                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
-                                                   AbsoluteLayout.LayoutFlags="None"
-                                           BorderColor="Black">
+                                                <DataTemplate>
+                                                    <Frame Padding="0"  BorderColor="Black">
                                                     <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center" />
                                                     <Frame.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference collection}}"
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference list}}"
                                                                   CommandParameter="{Binding .}" />
                                                     </Frame.GestureRecognizers>
                                                 </Frame>
@@ -98,7 +58,67 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                    
+                <CollectionView 
+                    IsVisible="{Binding IsSheet, Converter={xct:InvertedBoolConverter}}"
+                    x:Name="collection"
+                    ItemsSource="{Binding StripsItems}" 
+                    BackgroundColor="Black">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
 
+                            <Frame HasShadow="False" BackgroundColor="Black" Padding="5">
+                                <Frame HasShadow="False" Padding="0" >
+                                        <!--<FlexLayout BindableLayout.ItemsSource="{Binding CuttedStrips}" Wrap="NoWrap">
+
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate>
+                                                    
+                                            <Frame Padding="0"
+                                                 
+                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
+                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
+                                                   AbsoluteLayout.LayoutFlags="None"
+                                           BorderColor="Black">
+                                                <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center" />
+                                                <Frame.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference collection}}"
+                                                                  CommandParameter="{Binding .}" />
+                                                </Frame.GestureRecognizers>
+                                            </Frame>
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+
+                                        </FlexLayout>-->
+                                        <CollectionView ItemsSource="{Binding CuttedStrips}" HeightRequest="{Binding CuttedStrips, Converter={converter:ListCountToHeightRequestConverter}}">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Frame Padding="0"
+                                                 
+                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
+                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
+                                                   AbsoluteLayout.LayoutFlags="None"
+                                           BorderColor="Black">
+                                                        <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center" />
+                                                        <Frame.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference collection}}"
+                                                                  CommandParameter="{Binding .}" />
+                                                        </Frame.GestureRecognizers>
+                                                    </Frame>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+
+                                        </CollectionView>
+                                    </Frame>
+                                </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                </Grid>
             </StackLayout>
 
             <Frame AbsoluteLayout.LayoutBounds="0,0,1,1"  AbsoluteLayout.LayoutFlags="All"
