@@ -32,23 +32,25 @@
                     ItemsSource="{Binding Items}" 
                     BackgroundColor="Black">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-
-                            <Frame HasShadow="False" BackgroundColor="Black" Padding="5">
+                            <DataTemplate>
+                                <Frame HasShadow="False" BackgroundColor="Black" Padding="5">
                                 <Frame HasShadow="False" Padding="0" >
                                     <AbsoluteLayout BindableLayout.ItemsSource="{Binding CuttedPanels}"
                                       VerticalOptions="FillAndExpand">
                                         <BindableLayout.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Frame Padding="0"  BorderColor="Black">
-                                                    <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
+                                                    <Frame Padding="0" 
+                                                   BackgroundColor="{Binding Color, Converter={converter:StringToColorConverter}}"
+                                                   AbsoluteLayout.LayoutBounds="{Binding .,Converter={converter:BoundsToRectangleConverter}}"
+                                                   AbsoluteLayout.LayoutFlags="None">
+                                                        <Label Text="{Binding Title}" TextColor="White" FontSize="Caption"
                                                HorizontalTextAlignment="Center"
                                                VerticalTextAlignment="Center" />
-                                                    <Frame.GestureRecognizers>
-                                                            <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference list}}"
+                                                        <Frame.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding BindingContext.DetailsCommand, Source={x:Reference scroll}}"
                                                                   CommandParameter="{Binding .}" />
-                                                    </Frame.GestureRecognizers>
-                                                </Frame>
+                                                        </Frame.GestureRecognizers>
+                                                    </Frame>
 
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>

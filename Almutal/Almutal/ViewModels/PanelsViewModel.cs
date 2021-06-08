@@ -99,7 +99,6 @@ namespace Almutal.ViewModels
 
                 PopupVisible = true;
             }
-
         }
 
         private Task SaveAsync()

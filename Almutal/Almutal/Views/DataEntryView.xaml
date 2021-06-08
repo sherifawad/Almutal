@@ -5,6 +5,7 @@
     xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
     xmlns:local="clr-namespace:Almutal"
     xmlns:views="clr-namespace:Almutal.Views"
+    xmlns:converter="clr-namespace:Almutal.ValueConverters"
     xmlns:viewModels="clr-namespace:Almutal.ViewModels"
     x:Class="Almutal.Views.DataEntryView"
     x:Name="page">
@@ -242,6 +243,448 @@
 
             <!--#endregion-->
 
+            <!--#region Sheet controle Template -->
+
+            <ControlTemplate x:Key="SheetControlTemplate">
+                <Frame Padding="4" BackgroundColor="Silver" HasShadow="False" Margin="10" >
+                    <Frame HasShadow="False" Padding="0">
+                        <Grid RowDefinitions="Auto,Auto,*"
+                    BackgroundColor="White">
+                            <Grid
+                        RowDefinitions="Auto,*"
+                        HorizontalOptions="Center">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetEditCommand}" />
+                                </Grid.GestureRecognizers>
+
+                                <!--<Frame Grid.Column="0" Grid.RowSpan="2"
+                               BackgroundColor="Silver" 
+                               Padding="0,0,5,0"
+                                       HasShadow="False">
+                            <Label Text="Sheet"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold"
+                                   FontSize="Large"
+                                   TextColor="Black"/>
+                        </Frame>-->
+
+                                <Grid>
+                                    <Grid 
+                                RowDefinitions="Auto,*"
+                                ColumnDefinitions="Auto,*,Auto,*,Auto,*"
+                                  IsVisible="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetEditMode, Converter={xct:InvertedBoolConverter}}">
+
+                                        <Label Grid.Column="0" 
+                                       Text="Width:"
+                                       Style="{StaticResource DataLabelStyle}"/>
+
+                                        <Label Grid.Column="1" 
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetWidth}" 
+                                       Style="{StaticResource DataValueLabelStyle}"/>
+
+                                        <Label Grid.Column="2" 
+                                       Text="Length:" 
+                                       Style="{StaticResource DataLabelStyle}"/>
+
+                                        <Label Grid.Column="3" 
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetLength}" 
+                                       Style="{StaticResource DataValueLabelStyle}" />
+
+                                        <Label Grid.Column="4" 
+                                       Text="Kerf:" 
+                                       Style="{StaticResource DataLabelStyle}"/>
+
+                                        <Label Grid.Column="5"
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.KerfWidth}"
+                                       Style="{StaticResource DataValueLabelStyle}"/>
+
+                                        <Label Grid.Column="0" 
+                                       Grid.Row="1"
+                                       Text="Title:" 
+                                       Style="{StaticResource DataLabelStyle}"/>
+
+                                        <Label Grid.Column="1" 
+                                       Grid.Row="1"
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.Title}"
+                                       Style="{StaticResource DataValueLabelStyle}" />
+
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*,*,Auto"
+                                  RowDefinitions="*,*,Auto"
+                                  RowSpacing="0"
+                                  IsVisible="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetEditMode}">
+
+                                        <Entry Grid.Column="0" 
+                                       Grid.Row="0"
+                                       Placeholder="Width"
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetWidth}" 
+                                       Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior x:Name="sheetWidthMultiValidation"
+                                                                             IsValid="{Binding IsSheetWidthValid}"
+                                                                             InvalidStyle="{StaticResource InvalidEntryStyle}" >
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                    <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero" />
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+
+                                        <Entry Grid.Column="1" 
+                                       Grid.Row="0"
+                                        Placeholder="Length"
+                                        Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetLength}"
+                                       Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior 
+                                                    x:Name="sheetLengthMultiValidation"
+                                                    IsValid="{Binding IsSheetLengthValid}"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                    <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+
+                                        <Entry Grid.Column="2" 
+                                       Grid.Row="0"
+                                        Placeholder="Kerf"
+                                        Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.KerfWidth}"
+                                       Keyboard="Numeric">
+                                            <Entry.Behaviors>
+                                                <xct:MultiValidationBehavior 
+                                                    x:Name="kerfMultiValidation"
+                                                    IsValid="{Binding IsKerfValid}"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                    <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                    <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                </xct:MultiValidationBehavior>
+                                            </Entry.Behaviors>
+                                        </Entry>
+
+                                        <Entry Grid.Row="1"
+                                       Grid.ColumnSpan="3"
+                                       Placeholder="Title"
+                                       Text="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.Title}"/>
+
+                                        <Label Grid.Column="4"
+                                       Grid.Row="0"
+                                       Grid.RowSpan="3"
+                                       Padding="30,0,0,0"
+                                       FontFamily="SolidAwesome" 
+                                       Text="&#xf00c;" 
+                                       FontSize="Title"
+                                       VerticalOptions="Center"
+                                       TextColor="Green">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SetSheetDimensionsCommand}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+
+                                        <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       HasShadow="False"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       IsVisible="{Binding IsValid, Source={x:Reference kerfMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference kerfMultiValidation}}"
+                                                TextColor="Red"/>
+                                        </Frame>
+
+                                        <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       HasShadow="False"
+                                       IsVisible="{Binding IsValid, Source={x:Reference sheetLengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference sheetLengthMultiValidation}}"
+                                                TextColor="Red"/>
+                                        </Frame>
+
+                                        <Frame Grid.Row="2" 
+                                       Grid.ColumnSpan="3"
+                                       Padding="0" 
+                                       BackgroundColor="White"
+                                       HasShadow="False"
+                                       IsVisible="{Binding IsValid, Source={x:Reference sheetWidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                            <Label 
+                                        Text="{Binding Errors[0], Source={x:Reference sheetWidthMultiValidation}}"
+                                        TextColor="Red"/>
+                                        </Frame>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+
+                            <Grid 
+                        Grid.Row="1"
+                        ColumnDefinitions="*, Auto, *" 
+                        IsVisible="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.CanAddPanels}">
+                                <BoxView  
+                            Grid.ColumnSpan="3"
+                            VerticalOptions="Start"
+                            BackgroundColor="LightGray" HeightRequest="3">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Source={x:Reference button}, Path=IsEnabled}" Value="true">
+                                            <Setter Property="BackgroundColor" Value="{Binding Source={x:Reference button}, Path=BackgroundColor}" />
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+
+                                <Button Grid.Column="0" Text="CALCULATE" Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.CalculateCommand}"  />
+
+                                <Label Grid.Column="1" Text="Items" HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="Large"
+                                   />
+
+                                <Button 
+                            x:Name="button"
+                            Grid.Column="2"
+                            Text="ADD" 
+                            WidthRequest="20"
+                            HeightRequest="20"
+                            Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.AddBoxCommand}" />
+
+
+                                <BoxView
+                        Grid.ColumnSpan="3"
+                        VerticalOptions="End"
+                        HeightRequest="3">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView" Binding="{Binding Source={x:Reference button}, Path=IsEnabled}" Value="true">
+                                            <Setter Property="BackgroundColor" Value="{Binding Source={x:Reference button}, Path=BackgroundColor}" />
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+                            </Grid>
+                            
+                            <CollectionView
+                        Grid.Row="2"
+                        IsVisible="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.CanAddPanels}"
+                        SelectionMode="None"
+                        ItemsSource="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.Panels}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid RowDefinitions="Auto,*" >
+                                            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto"
+                                          RowDefinitions="Auto,Auto"
+                                          VerticalOptions="Center"
+                                          IsVisible="{Binding EditMode,Converter={xct:InvertedBoolConverter}}">
+                                                <Label Grid.Column="0" 
+                                               FontSize="Body" 
+                                                   Text="Width" 
+                                                   Style="{StaticResource DataLabelStyle}"/>
+                                                <Label Grid.Column="1" 
+                                               FontSize="Body" 
+                                               Text="{Binding Width}" 
+                                               Style="{StaticResource DataValueLabelStyle}"/>
+
+                                                <Label Grid.Column="2" 
+                                               FontSize="Body" 
+                                               Text="Height" 
+                                               Style="{StaticResource DataLabelStyle}"/>
+                                                <Label Grid.Column="3" 
+                                               FontSize="Body" 
+                                               Text="{Binding Length}" 
+                                               Style="{StaticResource DataValueLabelStyle}" />
+
+                                                <Label Grid.Column="4" 
+                                               FontSize="Body" 
+                                               Text="Count"
+                                               Style="{StaticResource DataLabelStyle}"/>
+                                                <Label Grid.Column="5" 
+                                               FontSize="Body" 
+                                               Text="{Binding Count}"
+                                               Style="{StaticResource DataValueLabelStyle}"/>
+
+                                                <Label Grid.Column="0"
+                                               Grid.Row="1"
+                                               Text="Title:" 
+                                               Style="{StaticResource DataLabelStyle}"/>
+                                                <Label Grid.Column="1" 
+                                               Grid.ColumnSpan="2"
+                                               Grid.Row="1"
+                                               Text="{Binding Title}"
+                                               Style="{StaticResource DataValueLabelStyle}" />
+
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.EditCommand}" CommandParameter="{Binding .}" />
+                                                </Grid.GestureRecognizers>
+                                            </Grid>
+
+                                            <Grid ColumnDefinitions="2*,2*,2*,*,*" 
+                                          RowDefinitions="Auto,Auto,*"
+                                          RowSpacing="0"
+                                          IsVisible="{Binding EditMode}">
+                                                <Entry Grid.Column="0"
+                                               PlaceholderColor="Silver"
+                                               Placeholder="Width"
+                                               Text="{Binding Width}" 
+                                               TextColor="Black"
+                                               Keyboard="Numeric">
+                                                    <Entry.Behaviors>
+                                                        <xct:MultiValidationBehavior x:Name="WidthMultiValidation"
+                                                                             InvalidStyle="{StaticResource InvalidEntryStyle}"
+                                                                             >
+                                                            <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                            <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                            
+                                                            
+                                                            <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                        </xct:MultiValidationBehavior>
+                                                    </Entry.Behaviors>
+                                                </Entry>
+
+                                                <Entry Grid.Column="1" 
+                                               PlaceholderColor="Silver"
+                                               Placeholder="Length"
+                                               Text="{Binding Length}" TextColor="Black" Keyboard="Numeric">
+                                                    <Entry.Behaviors>
+                                                        <xct:MultiValidationBehavior 
+                                                    x:Name="LengthMultiValidation"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                            <xct:NumericValidationBehavior MaximumDecimalPlaces="2" 
+                                                                                   xct:MultiValidationBehavior.Error="Maximum Decimal Places Reached"/>
+                                                            <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                            <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                        </xct:MultiValidationBehavior>
+                                                    </Entry.Behaviors>
+                                                </Entry>
+
+                                                <Entry Grid.Column="2"
+                                               PlaceholderColor="Silver" 
+                                               Placeholder="Count"
+                                               Text="{Binding Count}" TextColor="Black" Keyboard="Numeric">
+                                                    <Entry.Behaviors>
+                                                        <xct:MultiValidationBehavior 
+                                                    x:Name="CountMultiValidation"
+                                                    InvalidStyle="{StaticResource InvalidEntryStyle}">
+                                                            <xct:NumericValidationBehavior MaximumDecimalPlaces="0" 
+                                                                                   xct:MultiValidationBehavior.Error="Value is not integer"/>
+                                                            <xct:NumericValidationBehavior MinimumValue="1"  
+                                                                                   xct:MultiValidationBehavior.Error="Values can not be Zero"
+                                                                                    />
+                                                            <xct:CharactersValidationBehavior MinimumCharacterCount="1"
+                                                                                      CharacterType="Digit"
+                                                                                      xct:MultiValidationBehavior.Error="Values can not be empty"/>
+                                                        </xct:MultiValidationBehavior>
+                                                    </Entry.Behaviors>
+                                                </Entry>
+
+                                                <Entry Grid.Row="1"
+                                               Grid.ColumnSpan="3"
+                                               PlaceholderColor="Silver"
+                                               Placeholder="Title" 
+                                               Text="{Binding Title}"/>
+
+                                                <Label Grid.Column="3" 
+                                               Grid.RowSpan="3"
+                                               FontFamily="SolidAwesome" Text="&#xf00c;" FontSize="Title"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End"
+                                               TextColor="Green">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SetBoxDimensionsCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+
+                                                <Label Grid.Column="4" 
+                                               Grid.RowSpan="3"
+                                               FontFamily="SolidAwesome" Text="&#xf1f8;" FontSize="Title"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End" 
+                                               TextColor="Red">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.RemoveBoxCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+
+                                                <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
+                                               HasShadow="False"
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference CountMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                                    <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference CountMultiValidation}}"
+                                                TextColor="Red"/>
+                                                </Frame>
+
+                                                <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
+                                               HasShadow="False"
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference LengthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                                    <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference LengthMultiValidation}}"
+                                                TextColor="Red"/>
+                                                </Frame>
+
+                                                <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
+                                               HasShadow="False"
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding IsValid, Source={x:Reference WidthMultiValidation}, Converter={xct:InvertedBoolConverter}}">
+                                                    <Label 
+                                                Text="{Binding Errors[0], Source={x:Reference WidthMultiValidation}}"
+                                                TextColor="Red"/>
+                                                </Frame>
+                                                <Frame Grid.Row="2" 
+                                               Grid.ColumnSpan="3"
+                                               HasShadow="False"
+                                               Padding="0" BackgroundColor="White"
+                                               IsVisible="{Binding DimensionError}">
+                                                    <Label 
+                                                Text="Panel Dimension exceeds Sheet Dimension"
+                                                TextColor="Red"/>
+                                                </Frame>
+
+                                            </Grid>
+
+                                            <BoxView Grid.Row="1"  BackgroundColor="Silver" HeightRequest="3" />
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </Frame>
+                </Frame>
+                
+            </ControlTemplate>
+
+            <!--#endregion-->
+
             <!--#region StripTemplate -->
 
             <DataTemplate x:Key="StripTemplate">
@@ -315,7 +758,7 @@
                                                                       CommandParameter="{Binding .}"/>
                             </Label.GestureRecognizers>
                         </Label>
-                        
+
                         <Entry Grid.Column="2" 
                                 PlaceholderColor="Silver"
                                 Placeholder="Length"
@@ -406,13 +849,13 @@
                     <Frame HasShadow="False" Padding="0">
                         <StackLayout
                     BackgroundColor="White">
+                            
                             <Grid
                         RowDefinitions="Auto,*"
                         HorizontalOptions="Center">
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding  Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetEditCommand}" />
                                 </Grid.GestureRecognizers>
-
                                 <Grid 
                             IsVisible="{Binding Source={RelativeSource TemplatedParent}, Path=BindingContext.SheetDataEntry, Converter={xct:InvertedBoolConverter}}">
 
@@ -505,10 +948,10 @@
 
                                                 <Label.IsVisible>
                                                     <MultiBinding Converter="{xct:VariableMultiValueConverter ConditionType=All}">
-                                                            
+
                                                         <Binding Path="IsValid" Source="{x:Reference bladeWidthMultiValidation}"/>
-                                                            <Binding Path="IsValid" Source="{x:Reference cutterEndWidthMultiValidation}"/>
-                                                                <Binding Path="IsValid" Source="{x:Reference stripLengthMultiValidation}"/>
+                                                        <Binding Path="IsValid" Source="{x:Reference cutterEndWidthMultiValidation}"/>
+                                                        <Binding Path="IsValid" Source="{x:Reference stripLengthMultiValidation}"/>
                                                     </MultiBinding>
                                                 </Label.IsVisible>
                                             </Label>
@@ -845,6 +1288,6 @@
         </ResourceDictionary>
     </local:BasePage.Resources>
     <local:BasePage.Content>
-        <ContentView ControlTemplate="{StaticResource StripControlTemplate}" />
+        <ContentView ControlTemplate="{StaticResource SheetControlTemplate}" />
     </local:BasePage.Content>
 </local:BasePage>

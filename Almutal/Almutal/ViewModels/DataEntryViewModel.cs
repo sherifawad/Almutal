@@ -108,7 +108,7 @@ namespace Almutal.ViewModels
         private void SetStrip()
         {
             if (BarLength.HasValue && BarLength != 0 &&
-                CutterEndWidth.HasValue && 
+                CutterEndWidth.HasValue &&
                 BladeWidth.HasValue && BarLength > (CutterEndWidth + BladeWidth))
             {
                 _stockStrip = new StockStrip { Length = (double)BarLength, Title = BarTitle };
@@ -145,28 +145,25 @@ namespace Almutal.ViewModels
         }
         private void SetSheetDimensions()
         {
-            if (IsSheetWidthValid && IsSheetLengthValid && IsKerfValid)
+            if (SheetWidth.HasValue && SheetLength.HasValue &&
+                SheetWidth != 0 && SheetLength != 0 &&
+                KerfWidth.HasValue && KerfWidth < SheetWidth && KerfWidth < SheetLength)
             {
-                if (SheetWidth != null && SheetLength != null &&
-                    SheetWidth != 0 && SheetLength != 0 &&
-                    KerfWidth != null)
+                Sheet = new StockSheet { Dimension = new Dimension(SheetLength, SheetWidth) };
+                SheetEditMode = false;
+                if (Panels.Count > 0)
                 {
-                    Sheet = new StockSheet { Dimension = new Dimension(SheetLength, SheetWidth) };
-                    SheetEditMode = false;
-                    if (Panels.Count > 0)
+                    foreach (var item in Panels.ToList())
                     {
-                        foreach (var item in Panels.ToList())
-                        {
-                            if (!Sheet.Dimension.canHold(item.Dimension))
-                                Panels.Remove(item);
+                        if (!Sheet.Dimension.canHold(item.Dimension))
+                            Panels.Remove(item);
 
-                        }
                     }
-
-                    CanAddPanels = true;
-
-                    MaxNumber = Math.Max((double)SheetLength, (double)SheetWidth);
                 }
+
+                CanAddPanels = true;
+
+                MaxNumber = Math.Max((double)SheetLength, (double)SheetWidth);
             }
         }
         private void Edit(object parameter)
@@ -185,13 +182,16 @@ namespace Almutal.ViewModels
         {
             if (parameter != null && parameter is Panel panel)
             {
-                if (IsWidthValid && IsLengthValid && IsCountValid)
+                if (panel.Width.HasValue && panel.Width > 0 && panel.Length.HasValue && panel.Length > 0 && panel.Count.HasValue && panel.Count > 0 )
                 {
-                    if (panel.Width > 0 && panel.Length > 0 && panel.Count > 0)
+                    if (Sheet.Dimension.canHold(new Dimension(panel.Length, panel.Width)))
                     {
-                        if (Sheet.Dimension.canHold(new Dimension(panel.Length, panel.Width)))
-                            panel.EditMode = false;
+                        panel.EditMode = false;
+                        panel.DimensionError = false;
+
                     }
+                    else
+                        panel.DimensionError = true;
                 }
             }
 
@@ -221,6 +221,7 @@ namespace Almutal.ViewModels
         }
         private void Add()
         {
+            SheetDataEntry = true;
             if (SheetDataEntry)
             {
                 Panels.Add(new Panel { EditMode = true });
@@ -232,11 +233,10 @@ namespace Almutal.ViewModels
         }
         private async Task Calculate()
         {
-            if (SheetDataEntry)
+            if (Panels.Count > 0)
             {
 
-
-                if (Panels.Count <= 0 || !SheetLength.HasValue || SheetLength == 0 ||
+                if (!SheetLength.HasValue || SheetLength == 0 ||
                     !SheetWidth.HasValue || SheetWidth == 0 || !KerfWidth.HasValue)
                     return;
 
@@ -267,9 +267,9 @@ namespace Almutal.ViewModels
                 }
 
             }
-            else
+            else if(StripList.Count > 0)
             {
-                if (StripList.Count <= 0 || !BarLength.HasValue || BarLength == 0 ||
+                if (BarLength.HasValue || BarLength == 0 ||
                     !CutterEndWidth.HasValue || !BladeWidth.HasValue)
                     return;
 

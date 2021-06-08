@@ -16,6 +16,7 @@ namespace Almutal.Models
         public bool EditMode { get; set; }
 
         public string Title { get; set; }
+        public bool DimensionError { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
